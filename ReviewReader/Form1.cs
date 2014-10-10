@@ -96,9 +96,21 @@ namespace TextReader
             var totUsers = (from r in users
                             group r by r.ReviewerId into grp
                             select new { reviewer = grp.Key }).Distinct().Count();
+
+            var maxReviewsbyUser = "0";
+            if (totReviews.ToString() == null)
+            {
+                totReviews = 0;
+                totUsers = 0;
+            }
+            else
+            {
+                maxReviewsbyUser = maxReviews.reviews.ToString();
+            }
+
             lbl_TotalReviews.Text = "Total Reviews: " + totReviews.ToString();
             //Add some error handling for max reviews when none selected
-            lbl_MaxUserReviews.Text = "Most Reviews by a User: " + maxReviews.reviews.ToString();
+            lbl_MaxUserReviews.Text = "Most Reviews by a User: " + maxReviewsbyUser;
             lbl_TotalReviewers.Text = "Total Reviewers: " + totUsers.ToString();
 
 
@@ -129,6 +141,27 @@ namespace TextReader
 
         private void btn_SelectReviewsWithParams_Click(object sender, EventArgs e)
         {
+
+            //Check if inputs are numbers
+            double Num;
+            bool isNum = double.TryParse(txt_StarsGivenHigh.Text, out Num);
+            if (!isNum)
+            {
+                MessageBox.Show("Invalid number in inputs");
+                txt_StarsGivenLow.Text = "";
+                txt_StarsGivenHigh.Text = "";
+                return;
+            }
+
+            isNum = double.TryParse(txt_StarsGivenLow.Text, out Num);
+            if (!isNum)
+            {
+                MessageBox.Show("Invalid number in inputs");
+                txt_StarsGivenLow.Text = "";
+                txt_StarsGivenHigh.Text = "";
+                return;
+            }
+
             var starsGivenLow = Convert.ToInt16(txt_StarsGivenLow.Text);
             var starsGivenHigh = Convert.ToInt16(txt_StarsGivenHigh.Text);
             string commandText = "select * from inb302." + cmb_TableNames.Text.ToString() +
@@ -136,11 +169,38 @@ namespace TextReader
             List<review> qryReviews = getReviewsFromDB(commandText);
             displayReviewsOnScreen(qryReviews);
             dgv_Reviews.DataSource = qryReviews;
+
+            //Reset the values
+            txt_StarsGivenLow.Text = "";
+            txt_StarsGivenHigh.Text = "";
             
         }
 
         private void btn_SelectUsersWithParams_Click(object sender, EventArgs e)
         {
+            //Check if a table is selected
+            if (cmb_TableNames.Text.ToString() == null)
+            {
+                MessageBox.Show("Please select a table");
+                return;
+            }
+
+            //Check if inputs are numbers
+            double Num;
+            bool isNum = double.TryParse(txt_ReviewsMadeLow.Text, out Num);
+            if (!isNum)
+            {
+                MessageBox.Show("Invalid number in inputs");
+                return;
+            }
+
+            isNum = double.TryParse(txt_ReviewsMadeHigh.Text, out Num);
+            if (!isNum)
+            {
+                MessageBox.Show("Invalid number in inputs");
+                return;
+            }
+
             var reviewsLow = Convert.ToInt16(txt_ReviewsMadeLow.Text);
             var reviewsHigh = Convert.ToInt16(txt_ReviewsMadeHigh.Text);
 
@@ -152,6 +212,10 @@ namespace TextReader
             List<review> qryReviews = getReviewsFromDB(commandText);
             displayReviewsOnScreen(qryReviews);
             dgv_Reviews.DataSource = qryReviews; 
+
+            //CLear the boxes
+            txt_ReviewsMadeLow.Text = "";
+            txt_ReviewsMadeHigh.Text = "";
         }
 
         private void btn_ExportToCSV_Click(object sender, EventArgs e)
@@ -208,28 +272,14 @@ namespace TextReader
         {
             
             //Add some error handling around this, for cell selection, maybe detect diff cells diff actions
-            var context = new ItemReviews();
             string reviewerId = dgv_Reviews.CurrentCell.Value.ToString();
-            var query = from c in context.reviews
-                        where c.ReviewerId == reviewerId
-                        select c;
 
-            //
-
-            List<review> users = query.ToList();
-
-            dgv_Reviews.DataSource = users;
-
-            var totReviews = users.Count;
-            var maxReviews = (from r in users
-                            group r by r.ReviewerId into grp
-                            select new { reviewer = grp.Key, reviews = grp.Count() }).OrderByDescending(x => x.reviews).FirstOrDefault();
-                           var totUsers = (from r in users
-                                           group r by r.ReviewerId into grp
-                                           select new { reviewer = grp.Key }).Distinct().Count();
-            lbl_TotalReviews.Text = "Total Reviews: " + totReviews.ToString();
-            lbl_MaxUserReviews.Text = "Most Reviews by a User: " + maxReviews.reviews.ToString();
-            lbl_TotalReviewers.Text = "Total Reviewers: " + totUsers.ToString();
+            string commandText = "select * from inb302." + cmb_TableNames.Text.ToString() +
+                " WHERE ReviewerID = '" + reviewerId + "'";
+            List<review> qryReviews = getReviewsFromDB(commandText);
+            displayReviewsOnScreen(qryReviews);
+            dgv_Reviews.DataSource = qryReviews; 
+            
 
         }
 
