@@ -313,7 +313,7 @@ namespace TextReader
 
         private void cmb_TableNames_SelectedIndexChanged(object sender, EventArgs e)
         {
-            currentTableName = "";
+
             
         }
 
@@ -338,7 +338,42 @@ namespace TextReader
 
         private void btn_SaveToTable_Click(object sender, EventArgs e)
         {
+            if (cmb_TableNames.Text.ToString() == null)
+            {
+                MessageBox.Show("Please select a table");
+                return;
+            }
 
+            List<review> printTable = (List<review>)dgv_Reviews.DataSource;
+
+            var connString = ConfigurationManager.ConnectionStrings["ItemReviews"].ConnectionString;
+            MySqlConnection conn = new MySqlConnection(connString);
+            MySqlCommand command = conn.CreateCommand();
+            conn.Open();
+
+            command.CommandText = "INSERT INTO " + cmb_TableNames.Text.ToString() + " VALUES(@ItemName, @ReviewersOfReview, @ReviewersOfReviewFoundHelpful, @StarsGiven, @ShortReview, @ReviewerId, @ReviewLocation, @IsAmazonVerifiedPurchase, @LongReview)";
+            command.Prepare();
+
+
+            //Add some error handling if nothing is parsed
+            foreach (review r in printTable)
+            {
+                command.Parameters.Clear();
+                //remove the ReviewId and ItemId, fuck em
+                command.Parameters.AddWithValue("@ItemName", r.ItemName);
+                command.Parameters.AddWithValue("@ReviewersOfReview", r.ReviewersOfReview);
+                command.Parameters.AddWithValue("@ReviewersOfReviewFoundHelpful", r.ReviewersOfReviewFoundHelpful);
+                command.Parameters.AddWithValue("@StarsGiven", r.StarsGiven);
+                command.Parameters.AddWithValue("@ShortReview", r.ShortReview);
+                command.Parameters.AddWithValue("@ReviewerId", r.ReviewerId);
+                command.Parameters.AddWithValue("@ReviewLocation", r.ReviewLocation);
+                command.Parameters.AddWithValue("@IsAmazonVerifiedPurchase", r.IsAmazonVerifiedPurchase);
+                command.Parameters.AddWithValue("@LongReview", r.LongReview);
+                //add some error handling around this
+                command.ExecuteNonQuery();
+            }
+            currentTableName = "";
+            conn.Close();
         }
     }
 }
