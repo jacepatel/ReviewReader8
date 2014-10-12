@@ -34,16 +34,16 @@
             this.btn_SelectUsersWithParams = new System.Windows.Forms.Button();
             this.btn_SelectFile = new System.Windows.Forms.Button();
             this.txt_StarsGivenLow = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lbl_starsbetween = new System.Windows.Forms.Label();
             this.txt_StarsGivenHigh = new System.Windows.Forms.TextBox();
             this.txt_ReviewsMadeHigh = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txt_ReviewsMadeLow = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.lbl_and1 = new System.Windows.Forms.Label();
             this.btn_ExportToCSV = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
+            this.lbl_reviewbetween = new System.Windows.Forms.Label();
             this.btn_SelectReviewsParams = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lbl_and2 = new System.Windows.Forms.Label();
             this.lbl_TotalReviews = new System.Windows.Forms.Label();
             this.lbl_TotalReviewers = new System.Windows.Forms.Label();
             this.lbl_MaxUserReviews = new System.Windows.Forms.Label();
@@ -111,14 +111,14 @@
             this.txt_StarsGivenLow.Size = new System.Drawing.Size(40, 20);
             this.txt_StarsGivenLow.TabIndex = 7;
             // 
-            // label1
+            // lbl_starsbetween
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(281, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(107, 13);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Stars Given Between";
+            this.lbl_starsbetween.AutoSize = true;
+            this.lbl_starsbetween.Location = new System.Drawing.Point(281, 15);
+            this.lbl_starsbetween.Name = "lbl_starsbetween";
+            this.lbl_starsbetween.Size = new System.Drawing.Size(107, 13);
+            this.lbl_starsbetween.TabIndex = 8;
+            this.lbl_starsbetween.Text = "Stars Given Between";
             // 
             // txt_StarsGivenHigh
             // 
@@ -149,14 +149,14 @@
             this.txt_ReviewsMadeLow.Size = new System.Drawing.Size(40, 20);
             this.txt_ReviewsMadeLow.TabIndex = 10;
             // 
-            // label3
+            // lbl_and1
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(444, 15);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(25, 13);
-            this.label3.TabIndex = 13;
-            this.label3.Text = "and";
+            this.lbl_and1.AutoSize = true;
+            this.lbl_and1.Location = new System.Drawing.Point(444, 15);
+            this.lbl_and1.Name = "lbl_and1";
+            this.lbl_and1.Size = new System.Drawing.Size(25, 13);
+            this.lbl_and1.TabIndex = 13;
+            this.lbl_and1.Text = "and";
             // 
             // btn_ExportToCSV
             // 
@@ -168,14 +168,14 @@
             this.btn_ExportToCSV.UseVisualStyleBackColor = true;
             this.btn_ExportToCSV.Click += new System.EventHandler(this.btn_ExportToCSV_Click);
             // 
-            // label4
+            // lbl_reviewbetween
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(264, 42);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(124, 13);
-            this.label4.TabIndex = 15;
-            this.label4.Text = "Reviews Given Between";
+            this.lbl_reviewbetween.AutoSize = true;
+            this.lbl_reviewbetween.Location = new System.Drawing.Point(264, 42);
+            this.lbl_reviewbetween.Name = "lbl_reviewbetween";
+            this.lbl_reviewbetween.Size = new System.Drawing.Size(124, 13);
+            this.lbl_reviewbetween.TabIndex = 15;
+            this.lbl_reviewbetween.Text = "Reviews Given Between";
             // 
             // btn_SelectReviewsParams
             // 
@@ -187,14 +187,14 @@
             this.btn_SelectReviewsParams.UseVisualStyleBackColor = true;
             this.btn_SelectReviewsParams.Click += new System.EventHandler(this.btn_SelectReviewsWithParams_Click);
             // 
-            // label5
+            // lbl_and2
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(444, 42);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(25, 13);
-            this.label5.TabIndex = 17;
-            this.label5.Text = "and";
+            this.lbl_and2.AutoSize = true;
+            this.lbl_and2.Location = new System.Drawing.Point(444, 42);
+            this.lbl_and2.Name = "lbl_and2";
+            this.lbl_and2.Size = new System.Drawing.Size(25, 13);
+            this.lbl_and2.TabIndex = 17;
+            this.lbl_and2.Text = "and";
             // 
             // lbl_TotalReviews
             // 
@@ -266,13 +266,13 @@
             // 
             this.btn_SaveToTable.Location = new System.Drawing.Point(424, 513);
             this.btn_SaveToTable.Name = "btn_SaveToTable";
-            this.btn_SaveToTable.Size = new System.Drawing.Size(125, 27);
+            this.btn_SaveToTable.Size = new System.Drawing.Size(125, 23);
             this.btn_SaveToTable.TabIndex = 25;
             this.btn_SaveToTable.Text = "Save to Table";
             this.btn_SaveToTable.UseVisualStyleBackColor = true;
             this.btn_SaveToTable.Click += new System.EventHandler(this.btn_SaveToTable_Click);
             // 
-            // Form1
+            // frm_Main
             // 
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(737, 552);
@@ -284,23 +284,23 @@
             this.Controls.Add(this.lbl_MaxUserReviews);
             this.Controls.Add(this.lbl_TotalReviewers);
             this.Controls.Add(this.lbl_TotalReviews);
-            this.Controls.Add(this.label5);
+            this.Controls.Add(this.lbl_and2);
             this.Controls.Add(this.btn_SelectReviewsParams);
-            this.Controls.Add(this.label4);
+            this.Controls.Add(this.lbl_reviewbetween);
             this.Controls.Add(this.btn_ExportToCSV);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.lbl_and1);
             this.Controls.Add(this.txt_ReviewsMadeHigh);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txt_ReviewsMadeLow);
             this.Controls.Add(this.txt_StarsGivenHigh);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lbl_starsbetween);
             this.Controls.Add(this.txt_StarsGivenLow);
             this.Controls.Add(this.btn_SelectFile);
             this.Controls.Add(this.btn_SelectUsersWithParams);
             this.Controls.Add(this.btn_ViewReviews);
             this.Controls.Add(this.dgv_Reviews);
             this.Controls.Add(this.loadDb);
-            this.Name = "Form1";
+            this.Name = "frm_Main";
             this.Text = "Review Reader";
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Reviews)).EndInit();
             this.ResumeLayout(false);
@@ -316,16 +316,16 @@
         private System.Windows.Forms.Button btn_SelectUsersWithParams;
         private System.Windows.Forms.Button btn_SelectFile;
         private System.Windows.Forms.TextBox txt_StarsGivenLow;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lbl_starsbetween;
         private System.Windows.Forms.TextBox txt_StarsGivenHigh;
         private System.Windows.Forms.TextBox txt_ReviewsMadeHigh;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txt_ReviewsMadeLow;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lbl_and1;
         private System.Windows.Forms.Button btn_ExportToCSV;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lbl_reviewbetween;
         private System.Windows.Forms.Button btn_SelectReviewsParams;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lbl_and2;
         private System.Windows.Forms.Label lbl_TotalReviews;
         private System.Windows.Forms.Label lbl_TotalReviewers;
         private System.Windows.Forms.Label lbl_MaxUserReviews;

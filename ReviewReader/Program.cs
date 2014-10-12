@@ -114,10 +114,10 @@ namespace ReviewReader
 
         public static void ReadFile(string file, string writeTableName)
         {
-            
+
             Task.Run(() =>
             {
-                
+
                 //Look i added some comments
                 int counter = 0;
                 string line;
@@ -437,11 +437,10 @@ namespace ReviewReader
                 {
                     MessageBox.Show(ex.Message);
                 }
-                
-                // Suspend the screen.
-                //Console.ReadLine();
-                
             });
+            // Suspend the screen.
+            //Console.ReadLine();
+
 
         }
     }

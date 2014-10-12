@@ -14,6 +14,7 @@ using System.IO;
 using Microsoft.VisualBasic;
 using MySql.Data.MySqlClient;
 using System.Configuration;
+using System.Diagnostics;
 
 namespace ReviewReader
 {
@@ -42,10 +43,21 @@ namespace ReviewReader
 
         private void loadDb_Click(object sender, EventArgs e)
         {
+            if (cmb_TableNames.Text == "")
+            {
+                MessageBox.Show("Please select a table");
+                return;
+            }
             if (filePath != "")
             {
                 MessageBox.Show("This may take up to 30 minutes, will be faster soon");
+
+
+
                 Program.ReadFile(filePath, cmb_TableNames.Text);
+
+
+
             }
             else
             {
@@ -56,35 +68,45 @@ namespace ReviewReader
 
         public List<review> getReviewsFromDB(string commandText)
         {
+            List<review> qryReviews = new List<review>();
             var connString = settings.ItemReviews;
             MySqlConnection conn = new MySqlConnection(connString);
             MySqlCommand command = conn.CreateCommand();
-            conn.Open();
-            command.CommandText = commandText;
-
-            List<review> qryReviews = new List<review>();
-            MySqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
+            try
             {
-                try
-                {
-                    review r = new review();
-                    r.ItemName = reader.GetString(0);
-                    r.ReviewersOfReview = reader.GetInt16(1);
-                    r.ReviewersOfReviewFoundHelpful = reader.GetInt16(2);
-                    r.StarsGiven = reader.GetInt16(3);
-                    r.ShortReview = reader.GetString(4);
-                    r.ReviewerId = reader.GetString(5);
-                    r.ReviewLocation = reader.GetString(6);
-                    r.IsAmazonVerifiedPurchase = reader.GetBoolean(7);
-                    r.LongReview = reader.GetString(8);
-                    qryReviews.Add(r);
-                }
-                catch (Exception ex)
-                {
-                    //MessageBox.Show(ex.Message);
-                }
+                conn.Open();
+                command.CommandText = commandText;
+                
 
+                MySqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+
+                    review r = new review();
+                    try
+                    {
+                        r.ItemName = reader.GetString(0);
+                        r.ReviewersOfReview = reader.GetInt16(1);
+                        r.ReviewersOfReviewFoundHelpful = reader.GetInt16(2);
+                        r.StarsGiven = reader.GetInt16(3);
+                        r.ShortReview = reader.GetString(4);
+                        r.ReviewerId = reader.GetString(5);
+                        r.ReviewLocation = reader.GetString(6);
+                        r.IsAmazonVerifiedPurchase = reader.GetBoolean(7);
+                        r.LongReview = reader.GetString(8);
+                        qryReviews.Add(r);
+                    }
+                    catch(Exception ex)
+                    {                        
+                        Debug.WriteLine(ex.Message);
+                    }
+                    
+                }
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
             }
 
             return qryReviews;
@@ -206,7 +228,7 @@ namespace ReviewReader
         private void btn_SelectUsersWithParams_Click(object sender, EventArgs e)
         {
             //Check if a table is selected
-            if (cmb_TableNames.Text == null)
+            if (cmb_TableNames.Text == "")
             {
                 MessageBox.Show("Please select a table");
                 return;
@@ -317,14 +339,28 @@ namespace ReviewReader
                 return;
             }
             //Add some error handling around this, for cell selection, maybe detect diff cells diff actions
-            string reviewerId = dgv_Reviews.CurrentCell.Value.ToString();
+            if (dgv_Reviews.CurrentCell.ColumnIndex == 5)
+            {
+                string reviewerId = dgv_Reviews.CurrentCell.Value.ToString();
 
-            string commandText = "select * from " + settings.selectedDatabase + "." + cmb_TableNames.Text +
-                " WHERE ReviewerID = '" + reviewerId + "'";
-            List<review> qryReviews = getReviewsFromDB(commandText);
-            displayReviewsOnScreen(qryReviews);
-            dgv_Reviews.DataSource = qryReviews;
+                string commandText = "select * from " + settings.selectedDatabase + "." + cmb_TableNames.Text +
+                    " WHERE ReviewerID = '" + reviewerId + "'";
+                List<review> qryReviews = getReviewsFromDB(commandText);
+                displayReviewsOnScreen(qryReviews);
+                dgv_Reviews.DataSource = qryReviews;
+                dgv_Reviews.ClearSelection();
+            }
+            else if (dgv_Reviews.CurrentCell.ColumnIndex == 0)
+            {
+                string ItemName = dgv_Reviews.CurrentCell.Value.ToString();
 
+                string commandText = "select * from " + settings.selectedDatabase + "." + cmb_TableNames.Text +
+                    " WHERE ItemName = '" + ItemName + "'";
+                List<review> qryReviews = getReviewsFromDB(commandText);
+                displayReviewsOnScreen(qryReviews);
+                dgv_Reviews.DataSource = qryReviews;
+                dgv_Reviews.ClearSelection();
+            }
 
         }
 
@@ -395,8 +431,7 @@ namespace ReviewReader
 
         private void btn_SaveToTable_Click(object sender, EventArgs e)
         {
-            Task.Run(() =>
-            {
+           
                 if (cmb_TableNames.Text == null)
                 {
                     MessageBox.Show("Please select a table");
@@ -433,7 +468,7 @@ namespace ReviewReader
                 }
                 currentTableName = "";
                 conn.Close();
-            });
+            
         }
     }
 }

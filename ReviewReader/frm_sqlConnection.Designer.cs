@@ -28,47 +28,47 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.lbl_serverName = new System.Windows.Forms.Label();
+            this.lbl_username = new System.Windows.Forms.Label();
+            this.lbl_password = new System.Windows.Forms.Label();
             this.tbx_serverName = new System.Windows.Forms.TextBox();
             this.tbx_userName = new System.Windows.Forms.TextBox();
             this.tbx_password = new System.Windows.Forms.TextBox();
             this.btn_Connect = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.GB_connToDB = new System.Windows.Forms.GroupBox();
             this.cmb_databaseNames = new System.Windows.Forms.ComboBox();
             this.brn_CreateNewDatabase = new System.Windows.Forms.Button();
             this.btn_Ok = new System.Windows.Forms.Button();
             this.lbl_Connected = new System.Windows.Forms.Label();
-            this.groupBox1.SuspendLayout();
+            this.GB_connToDB.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label1
+            // lbl_serverName
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 48);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(69, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Server Name";
+            this.lbl_serverName.AutoSize = true;
+            this.lbl_serverName.Location = new System.Drawing.Point(12, 48);
+            this.lbl_serverName.Name = "lbl_serverName";
+            this.lbl_serverName.Size = new System.Drawing.Size(69, 13);
+            this.lbl_serverName.TabIndex = 0;
+            this.lbl_serverName.Text = "Server Name";
             // 
-            // label2
+            // lbl_username
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 74);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(58, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "User name";
+            this.lbl_username.AutoSize = true;
+            this.lbl_username.Location = new System.Drawing.Point(12, 74);
+            this.lbl_username.Name = "lbl_username";
+            this.lbl_username.Size = new System.Drawing.Size(58, 13);
+            this.lbl_username.TabIndex = 1;
+            this.lbl_username.Text = "User name";
             // 
-            // label3
+            // lbl_password
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 100);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Password";
+            this.lbl_password.AutoSize = true;
+            this.lbl_password.Location = new System.Drawing.Point(12, 100);
+            this.lbl_password.Name = "lbl_password";
+            this.lbl_password.Size = new System.Drawing.Size(53, 13);
+            this.lbl_password.TabIndex = 2;
+            this.lbl_password.Text = "Password";
             // 
             // tbx_serverName
             // 
@@ -102,23 +102,23 @@
             this.btn_Connect.UseVisualStyleBackColor = true;
             this.btn_Connect.Click += new System.EventHandler(this.btn_Connect_Click);
             // 
-            // groupBox1
+            // GB_connToDB
             // 
-            this.groupBox1.Controls.Add(this.cmb_databaseNames);
-            this.groupBox1.Controls.Add(this.brn_CreateNewDatabase);
-            this.groupBox1.Enabled = false;
-            this.groupBox1.Location = new System.Drawing.Point(12, 198);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(496, 166);
-            this.groupBox1.TabIndex = 7;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Connect to a Database";
+            this.GB_connToDB.Controls.Add(this.cmb_databaseNames);
+            this.GB_connToDB.Controls.Add(this.brn_CreateNewDatabase);
+            this.GB_connToDB.Enabled = false;
+            this.GB_connToDB.Location = new System.Drawing.Point(12, 198);
+            this.GB_connToDB.Name = "GB_connToDB";
+            this.GB_connToDB.Size = new System.Drawing.Size(496, 166);
+            this.GB_connToDB.TabIndex = 7;
+            this.GB_connToDB.TabStop = false;
+            this.GB_connToDB.Text = "Connect to a Database";
             // 
-            // cmb_TableNames
+            // cmb_databaseNames
             // 
             this.cmb_databaseNames.FormattingEnabled = true;
             this.cmb_databaseNames.Location = new System.Drawing.Point(6, 19);
-            this.cmb_databaseNames.Name = "cmb_TableNames";
+            this.cmb_databaseNames.Name = "cmb_databaseNames";
             this.cmb_databaseNames.Size = new System.Drawing.Size(484, 21);
             this.cmb_databaseNames.TabIndex = 8;
             // 
@@ -160,17 +160,17 @@
             this.ClientSize = new System.Drawing.Size(523, 515);
             this.Controls.Add(this.lbl_Connected);
             this.Controls.Add(this.btn_Ok);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.GB_connToDB);
             this.Controls.Add(this.btn_Connect);
             this.Controls.Add(this.tbx_password);
             this.Controls.Add(this.tbx_userName);
             this.Controls.Add(this.tbx_serverName);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lbl_password);
+            this.Controls.Add(this.lbl_username);
+            this.Controls.Add(this.lbl_serverName);
             this.Name = "frm_sqlConnection";
             this.Text = "Connect to Database";
-            this.groupBox1.ResumeLayout(false);
+            this.GB_connToDB.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -178,14 +178,14 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lbl_serverName;
+        private System.Windows.Forms.Label lbl_username;
+        private System.Windows.Forms.Label lbl_password;
         private System.Windows.Forms.TextBox tbx_serverName;
         private System.Windows.Forms.TextBox tbx_userName;
         private System.Windows.Forms.TextBox tbx_password;
         private System.Windows.Forms.Button btn_Connect;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox GB_connToDB;
         private System.Windows.Forms.ComboBox cmb_databaseNames;
         private System.Windows.Forms.Button brn_CreateNewDatabase;
         private System.Windows.Forms.Button btn_Ok;

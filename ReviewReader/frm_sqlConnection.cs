@@ -106,7 +106,7 @@ namespace ReviewReader
                 settings.userId = tbx_userName.Text;
                 settings.serverName = tbx_serverName.Text;
                 settings.password = tbx_password.Text;
-                groupBox1.Enabled = true;
+                GB_connToDB.Enabled = true;
                 refreshComboBox();
             }
             catch(MySqlException ex)
