@@ -34,9 +34,9 @@ namespace ReviewReader
                 NameValue n1 = new NameValue(tableName, tableName);
                 cmb_TableNames.Items.Add(n1);
             }
-            if(cmb_TableNames.Items.Count > 0)
+            if (cmb_TableNames.Items.Count > 0)
                 cmb_TableNames.SelectedIndex = 0;
-            
+
         }
 
 
@@ -66,7 +66,8 @@ namespace ReviewReader
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                try{
+                try
+                {
                     review r = new review();
                     r.ItemName = reader.GetString(0);
                     r.ReviewersOfReview = reader.GetInt16(1);
@@ -138,11 +139,11 @@ namespace ReviewReader
             }
             else
             {
-                
-                    string commandText = "select * from " + settings.selectedDatabase + "." + cmb_TableNames.Text;
-                    List<review> qryReviews = getReviewsFromDB(commandText);
-                    displayReviewsOnScreen(qryReviews);
-                    dgv_Reviews.DataSource = qryReviews;                
+
+                string commandText = "select * from " + settings.selectedDatabase + "." + cmb_TableNames.Text;
+                List<review> qryReviews = getReviewsFromDB(commandText);
+                displayReviewsOnScreen(qryReviews);
+                dgv_Reviews.DataSource = qryReviews;
             }
 
         }
@@ -166,40 +167,40 @@ namespace ReviewReader
             {
                 MessageBox.Show("Please select a table");
                 return;
-            }           
-                //Check if inputs are numbers
-                double Num;
-                bool isNum = double.TryParse(txt_StarsGivenHigh.Text, out Num);
-                if (!isNum)
-                {
-                    MessageBox.Show("Invalid number in inputs");
-                    txt_StarsGivenLow.Text = "";
-                    txt_StarsGivenHigh.Text = "";
-                    return;
-                }
-
-                isNum = double.TryParse(txt_StarsGivenLow.Text, out Num);
-                if (!isNum)
-                {
-                    MessageBox.Show("Invalid number in inputs");
-                    txt_StarsGivenLow.Text = "";
-                    txt_StarsGivenHigh.Text = "";
-                    return;
-                }
-
-                var starsGivenLow = Convert.ToInt16(txt_StarsGivenLow.Text);
-                var starsGivenHigh = Convert.ToInt16(txt_StarsGivenHigh.Text);
-                string commandText = "select * from " + settings.selectedDatabase + "." + cmb_TableNames.Text +
-                    " WHERE starsGiven >= " + starsGivenLow + " AND starsGiven <= " + starsGivenHigh;
-                List<review> qryReviews = getReviewsFromDB(commandText);
-                displayReviewsOnScreen(qryReviews);
-                dgv_Reviews.DataSource = qryReviews;
-
-                //Reset the values
+            }
+            //Check if inputs are numbers
+            double Num;
+            bool isNum = double.TryParse(txt_StarsGivenHigh.Text, out Num);
+            if (!isNum)
+            {
+                MessageBox.Show("Invalid number in inputs");
                 txt_StarsGivenLow.Text = "";
                 txt_StarsGivenHigh.Text = "";
-            
-            
+                return;
+            }
+
+            isNum = double.TryParse(txt_StarsGivenLow.Text, out Num);
+            if (!isNum)
+            {
+                MessageBox.Show("Invalid number in inputs");
+                txt_StarsGivenLow.Text = "";
+                txt_StarsGivenHigh.Text = "";
+                return;
+            }
+
+            var starsGivenLow = Convert.ToInt16(txt_StarsGivenLow.Text);
+            var starsGivenHigh = Convert.ToInt16(txt_StarsGivenHigh.Text);
+            string commandText = "select * from " + settings.selectedDatabase + "." + cmb_TableNames.Text +
+                " WHERE starsGiven >= " + starsGivenLow + " AND starsGiven <= " + starsGivenHigh;
+            List<review> qryReviews = getReviewsFromDB(commandText);
+            displayReviewsOnScreen(qryReviews);
+            dgv_Reviews.DataSource = qryReviews;
+
+            //Reset the values
+            txt_StarsGivenLow.Text = "";
+            txt_StarsGivenHigh.Text = "";
+
+
         }
 
         private void btn_SelectUsersWithParams_Click(object sender, EventArgs e)
@@ -230,14 +231,14 @@ namespace ReviewReader
             var reviewsLow = Convert.ToInt16(txt_ReviewsMadeLow.Text);
             var reviewsHigh = Convert.ToInt16(txt_ReviewsMadeHigh.Text);
 
-            string commandText = "select * from "+settings.selectedDatabase+"." + cmb_TableNames.Text +
+            string commandText = "select * from " + settings.selectedDatabase + "." + cmb_TableNames.Text +
                 " WHERE ReviewerID IN " +
-                "(SELECT ReviewerID FROM " + settings.selectedDatabase + "." + cmb_TableNames.Text + " " + 
-                "GROUP BY ReviewerID " + 
-                "HAVING COUNT(*) >= "+reviewsLow+" AND COUNT(*) <= "+reviewsHigh+")";
+                "(SELECT ReviewerID FROM " + settings.selectedDatabase + "." + cmb_TableNames.Text + " " +
+                "GROUP BY ReviewerID " +
+                "HAVING COUNT(*) >= " + reviewsLow + " AND COUNT(*) <= " + reviewsHigh + ")";
             List<review> qryReviews = getReviewsFromDB(commandText);
             displayReviewsOnScreen(qryReviews);
-            dgv_Reviews.DataSource = qryReviews; 
+            dgv_Reviews.DataSource = qryReviews;
 
             //CLear the boxes
             txt_ReviewsMadeLow.Text = "";
@@ -246,65 +247,64 @@ namespace ReviewReader
 
         private void btn_ExportToCSV_Click(object sender, EventArgs e)
         {
-            Task.Run(() =>
+
+            string openClose = "--";
+            List<review> printTable = (List<review>)dgv_Reviews.DataSource;
+            var csv = new StringBuilder();
+            SaveFileDialog fDialog = new SaveFileDialog();
+            fDialog.Title = "Select File to Save To";
+            fDialog.Filter = "Text File|*.txt";
+
+            if (fDialog.ShowDialog() == DialogResult.OK)
             {
-                string openClose = "--";
-                List<review> printTable = (List<review>)dgv_Reviews.DataSource;
-                var csv = new StringBuilder();
-                SaveFileDialog fDialog = new SaveFileDialog();
-                fDialog.Title = "Select File to Save To";
-                fDialog.Filter = "Text File|*.txt";
+                filePath = fDialog.FileName.ToString();
 
-                if (fDialog.ShowDialog() == DialogResult.OK)
+
+
+                File.Create(filePath).Dispose();
+
+                using (StreamWriter sw = new StreamWriter(filePath, true))
                 {
-                    filePath = fDialog.FileName.ToString();
-
-
-
-                    File.Create(filePath).Dispose();
-
-                    using (StreamWriter sw = new StreamWriter(filePath, true))
+                    foreach (review r in printTable)
                     {
-                        foreach (review r in printTable)
+                        sw.Write(string.Format("{0}{1}", openClose, Environment.NewLine));
+                        //csv.Append(string.Format("{0}{1}", openClose, Environment.NewLine));
+
+                        string helpfullness = r.ReviewersOfReviewFoundHelpful + "/" + r.ReviewersOfReview;
+                        //csv.Append(string.Format("{0}{1}", helpfullness, Environment.NewLine));
+                        sw.Write(string.Format("{0}{1}", helpfullness, Environment.NewLine));
+
+                        if (r.ReviewersOfReview != 0)
                         {
-                            sw.Write(string.Format("{0}{1}", openClose, Environment.NewLine));
-                            //csv.Append(string.Format("{0}{1}", openClose, Environment.NewLine));
-
-                            string helpfullness = r.ReviewersOfReviewFoundHelpful + "/" + r.ReviewersOfReview;
-                            //csv.Append(string.Format("{0}{1}", helpfullness, Environment.NewLine));
-                            sw.Write(string.Format("{0}{1}", helpfullness, Environment.NewLine));
-
-                            if (r.ReviewersOfReview != 0)
-                            {
-                                decimal helpfullnessRating = decimal.Divide(r.ReviewersOfReviewFoundHelpful, r.ReviewersOfReview);
-                                //csv.Append(string.Format("{0}{1}", helpfullnessRating.ToString("#.##"), Environment.NewLine));
-                                sw.Write(string.Format("{0}{1}", helpfullnessRating.ToString("#.##"), Environment.NewLine));
-                            }
-                            else
-                            {
-                                //csv.Append(string.Format("{0}{1}", "No Helpfullness Rating", Environment.NewLine));
-                                sw.Write(string.Format("{0}{1}", "No Helpfullness Rating", Environment.NewLine));
-                            }
-                            //csv.Append(string.Format("{0}{1}", r.StarsGiven.ToString(), Environment.NewLine));
-                            sw.Write(string.Format("{0}{1}", r.StarsGiven.ToString(), Environment.NewLine));
-                            //csv.Append(string.Format("{0}{1}", r.ItemName, Environment.NewLine));
-                            sw.Write(string.Format("{0}{1}", r.ItemName, Environment.NewLine));
-
-                            string[] sentences = Regex.Split(r.LongReview, @"(?<=[\.!\?])\s+");
-                            foreach (string sentence in sentences)
-                            {
-                                //csv.Append(string.Format("{0}{1}", sentence, Environment.NewLine));
-                                sw.Write(string.Format("{0}{1}", sentence, Environment.NewLine));
-                            }
-
-                            //csv.Append(string.Format("{0}{1}", openClose, Environment.NewLine));
-                            sw.Write(string.Format("{0}{1}", openClose, Environment.NewLine));
+                            decimal helpfullnessRating = decimal.Divide(r.ReviewersOfReviewFoundHelpful, r.ReviewersOfReview);
+                            //csv.Append(string.Format("{0}{1}", helpfullnessRating.ToString("#.##"), Environment.NewLine));
+                            sw.Write(string.Format("{0}{1}", helpfullnessRating.ToString("#.##"), Environment.NewLine));
                         }
-                    }
-                    MessageBox.Show(fDialog.FileName.ToString());
-                }
+                        else
+                        {
+                            //csv.Append(string.Format("{0}{1}", "No Helpfullness Rating", Environment.NewLine));
+                            sw.Write(string.Format("{0}{1}", "No Helpfullness Rating", Environment.NewLine));
+                        }
+                        //csv.Append(string.Format("{0}{1}", r.StarsGiven.ToString(), Environment.NewLine));
+                        sw.Write(string.Format("{0}{1}", r.StarsGiven.ToString(), Environment.NewLine));
+                        //csv.Append(string.Format("{0}{1}", r.ItemName, Environment.NewLine));
+                        sw.Write(string.Format("{0}{1}", r.ItemName, Environment.NewLine));
 
-            });
+                        string[] sentences = Regex.Split(r.LongReview, @"(?<=[\.!\?])\s+");
+                        foreach (string sentence in sentences)
+                        {
+                            //csv.Append(string.Format("{0}{1}", sentence, Environment.NewLine));
+                            sw.Write(string.Format("{0}{1}", sentence, Environment.NewLine));
+                        }
+
+                        //csv.Append(string.Format("{0}{1}", openClose, Environment.NewLine));
+                        sw.Write(string.Format("{0}{1}", openClose, Environment.NewLine));
+                    }
+                }
+                MessageBox.Show(fDialog.FileName.ToString());
+            }
+
+
             //File.WriteAllText(filePath, csv.ToString());
 
         }
@@ -319,12 +319,12 @@ namespace ReviewReader
             //Add some error handling around this, for cell selection, maybe detect diff cells diff actions
             string reviewerId = dgv_Reviews.CurrentCell.Value.ToString();
 
-            string commandText = "select * from "+settings.selectedDatabase+"." + cmb_TableNames.Text +
+            string commandText = "select * from " + settings.selectedDatabase + "." + cmb_TableNames.Text +
                 " WHERE ReviewerID = '" + reviewerId + "'";
             List<review> qryReviews = getReviewsFromDB(commandText);
             displayReviewsOnScreen(qryReviews);
-            dgv_Reviews.DataSource = qryReviews; 
-            
+            dgv_Reviews.DataSource = qryReviews;
+
 
         }
 
@@ -350,9 +350,12 @@ namespace ReviewReader
         private void btn_createTable_Click(object sender, EventArgs e)
         {
             var tableName = Interaction.InputBox("Please Enter a Table Name (No Spaces, text characters only)", "Table Name", "ReviewsTableName");
-            
+
             //Add Some Checks
-            bool tableSuccess = Program.createTable(tableName);
+            if (tableName != "")
+            {
+                bool tableSuccess = Program.createTable(tableName);
+            }
 
             refreshComboBox();
 
@@ -361,7 +364,7 @@ namespace ReviewReader
         private void cmb_TableNames_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            
+
         }
 
 
@@ -381,7 +384,8 @@ namespace ReviewReader
                 command.CommandText = "DROP TABLE " + cmb_TableNames.Text;
                 command.ExecuteNonQuery();
                 conn.Close();
-            }catch(MySqlException ex)
+            }
+            catch (MySqlException ex)
             {
                 MessageBox.Show(ex.Message);
             }

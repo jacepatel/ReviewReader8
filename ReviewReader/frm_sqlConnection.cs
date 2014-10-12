@@ -31,7 +31,10 @@ namespace ReviewReader
             var databaseName = Interaction.InputBox("Please Enter a Database Name (No Spaces, text characters only)", "Database Name", "DatabaseName");
 
             //Add Some Checks
-            bool databaseSuccess = createDatabase(databaseName);
+            if (databaseName != "")
+            {
+                bool databaseSuccess = createDatabase(databaseName);
+            }
 
             refreshComboBox();
         }
