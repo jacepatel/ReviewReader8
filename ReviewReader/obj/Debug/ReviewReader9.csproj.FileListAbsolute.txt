@@ -26,7 +26,8 @@ C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\bin\Debug\mysql.data
 C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\bin\Debug\MySql.Web.dll
 C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\bin\Debug\EntityFramework.xml
 C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\bin\Debug\EntityFramework.SqlServer.xml
-C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\ReviewReader9.csprojResolveAssemblyReference.cache
-C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\TextReader.Form1.resources
 C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\TextReader.Properties.Resources.resources
 C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\ReviewReader9.csproj.GenerateResource.Cache
+C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\ReviewReader.frm_Main.resources
+C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\ReviewReader.frm_sqlConnection.resources
+C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\ReviewReader9.csprojResolveAssemblyReference.cache

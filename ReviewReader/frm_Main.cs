@@ -361,6 +361,12 @@ namespace ReviewReader
                 dgv_Reviews.DataSource = qryReviews;
                 dgv_Reviews.ClearSelection();
             }
+            else if (dgv_Reviews.CurrentCell.ColumnIndex == 7)
+            {
+                string review = dgv_Reviews.CurrentCell.Value.ToString();
+                MessageBox.Show(review, "Long Review");
+                
+            }
 
         }
 
