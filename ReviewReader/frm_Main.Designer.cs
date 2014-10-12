@@ -1,6 +1,6 @@
-﻿namespace TextReader
+﻿namespace ReviewReader
 {
-    partial class Form1
+    partial class frm_Main
     {
         /// <summary>
         /// Required designer variable.
@@ -301,7 +301,7 @@
             this.Controls.Add(this.dgv_Reviews);
             this.Controls.Add(this.loadDb);
             this.Name = "Form1";
-            this.Text = "s";
+            this.Text = "Review Reader";
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Reviews)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
