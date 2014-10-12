@@ -370,31 +370,41 @@ namespace ReviewReader
 
             foreach (Item i in allItems)
             {
-                foreach (Review r in i.Reviews)
+                if (i.Reviews != null)
                 {
-                    var trimLongReview = r.LongReview;
-
-                    if (r.LongReview != null)
+                    foreach (Review r in i.Reviews)
                     {
-                        if (r.LongReview.Length > 3999)
+                        var trimLongReview = r.LongReview;
+
+                        if (r.LongReview != null)
                         {
-                            trimLongReview = r.LongReview.Substring(1, 3999);
+                            if (r.LongReview.Length > 3999)
+                            {
+                                trimLongReview = r.LongReview.Substring(1, 3999);
+                            }
+                        }
+
+                        command.Parameters.Clear();
+                        //remove the ReviewId and ItemId, fuck em
+                        command.Parameters.AddWithValue("@ItemName", r.ReviewItem);
+                        command.Parameters.AddWithValue("@ReviewersOfReview", r.ReviewersOfReview);
+                        command.Parameters.AddWithValue("@ReviewersOfReviewFoundHelpful", r.ReviewersOfReviewFoundHelpful);
+                        command.Parameters.AddWithValue("@StarsGiven", r.StarsGiven);
+                        command.Parameters.AddWithValue("@ShortReview", r.ShortReview);
+                        command.Parameters.AddWithValue("@ReviewerId", r.Reviewer);
+                        command.Parameters.AddWithValue("@ReviewLocation", r.ReviewLocation);
+                        command.Parameters.AddWithValue("@IsAmazonVerifiedPurchase", r.IsAmazonVerifiedPurchase);
+                        command.Parameters.AddWithValue("@LongReview", trimLongReview);
+                        //add some error handling around this
+                        try
+                        {
+                            command.ExecuteNonQuery();
+                        }
+                        catch(Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
                         }
                     }
-                    
-                    command.Parameters.Clear();
-                    //remove the ReviewId and ItemId, fuck em
-                    command.Parameters.AddWithValue("@ItemName", r.ReviewItem);
-                    command.Parameters.AddWithValue("@ReviewersOfReview", r.ReviewersOfReview);
-                    command.Parameters.AddWithValue("@ReviewersOfReviewFoundHelpful", r.ReviewersOfReviewFoundHelpful);
-                    command.Parameters.AddWithValue("@StarsGiven", r.StarsGiven);
-                    command.Parameters.AddWithValue("@ShortReview", r.ShortReview);
-                    command.Parameters.AddWithValue("@ReviewerId", r.Reviewer);
-                    command.Parameters.AddWithValue("@ReviewLocation", r.ReviewLocation);
-                    command.Parameters.AddWithValue("@IsAmazonVerifiedPurchase", r.IsAmazonVerifiedPurchase);
-                    command.Parameters.AddWithValue("@LongReview", trimLongReview);       
-                    //add some error handling around this
-                    command.ExecuteNonQuery();
                 }
             }
 
