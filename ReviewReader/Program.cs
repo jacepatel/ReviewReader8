@@ -437,6 +437,7 @@ namespace ReviewReader
                 {
                     MessageBox.Show(ex.Message);
                 }
+                MessageBox.Show("Finished uploading");
             });
             // Suspend the screen.
             //Console.ReadLine();

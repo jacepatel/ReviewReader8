@@ -120,7 +120,8 @@ namespace ReviewReader
             var users = query.ToList();
 
             //Hide 0, 2, 10
-
+            //ask jace
+            //feedback on loading
             var totReviews = users.Count;
             var maxReviews = (from r in users
                               group r by r.ReviewerId into grp
@@ -365,6 +366,7 @@ namespace ReviewReader
             {
                 string review = dgv_Reviews.CurrentCell.Value.ToString();
                 MessageBox.Show(review, "Long Review");
+                //format
                 
             }
 
