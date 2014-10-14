@@ -37,7 +37,21 @@ namespace ReviewReader
             }
             if (cmb_TableNames.Items.Count > 0)
                 cmb_TableNames.SelectedIndex = 0;
+            Program._initprogress += new Program.initprogress(initprogress);
+            Program._progress += new Program.progress(progress);
 
+        }
+
+        private void progress(object param, EventArgs e)
+        {
+            progressBar1.PerformStep();
+        }
+
+        private void initprogress(object param, EventArgs e)
+        {
+            int count = (int)param/100;
+            progressBar1.Step = count;
+            progressBar1.Visible = true;
         }
 
 
@@ -53,9 +67,9 @@ namespace ReviewReader
                 MessageBox.Show("This may take up to 30 minutes, will be faster soon");
 
 
-
+                System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
                 Program.ReadFile(filePath, cmb_TableNames.Text);
-
+                System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
 
 
             }
@@ -115,14 +129,14 @@ namespace ReviewReader
         public void displayReviewsOnScreen(List<review> displayReviews)
         {
             List<review> qryReviews = displayReviews;
-
+            
             var query = from c in qryReviews select c;
             var users = query.ToList();
 
             //Hide 0, 2, 10
             //ask jace
             //feedback on loading
-            var totReviews = users.Count;
+            var totReviews = users.Count;            
             var maxReviews = (from r in users
                               group r by r.ReviewerId into grp
                               select new { reviewer = grp.Key, reviews = grp.Count() }).OrderByDescending(x => x.reviews).FirstOrDefault();
@@ -141,6 +155,7 @@ namespace ReviewReader
             {
                 if (maxReviews != null)
                     maxReviewsbyUser = maxReviews.reviews.ToString();
+                    
                 else
                     maxReviewsbyUser = "0";
             }
@@ -180,7 +195,7 @@ namespace ReviewReader
             if (fDialog.ShowDialog() == DialogResult.OK)
             {
                 filePath = fDialog.FileName.ToString();
-                MessageBox.Show(fDialog.FileName.ToString());
+                MessageBox.Show(fDialog.FileName.ToString(),"File Opened");
             }
         }
 

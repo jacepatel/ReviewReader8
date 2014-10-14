@@ -17,6 +17,7 @@ namespace ReviewReader
     public partial class frm_sqlConnection : Form
     {
         private ReviewReader.Properties.Settings settings = new Settings();
+        public static int numOfItems = 0;
         public frm_sqlConnection()
         {
             InitializeComponent();

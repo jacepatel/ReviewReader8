@@ -52,6 +52,7 @@
             this.lbl_DropDown = new System.Windows.Forms.Label();
             this.btn_DeleteTable = new System.Windows.Forms.Button();
             this.btn_SaveToTable = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Reviews)).BeginInit();
             this.SuspendLayout();
             // 
@@ -108,7 +109,7 @@
             // 
             this.txt_StarsGivenLow.Location = new System.Drawing.Point(418, 13);
             this.txt_StarsGivenLow.Name = "txt_StarsGivenLow";
-            this.txt_StarsGivenLow.Size = new System.Drawing.Size(40, 22);
+            this.txt_StarsGivenLow.Size = new System.Drawing.Size(40, 20);
             this.txt_StarsGivenLow.TabIndex = 7;
             // 
             // lbl_starsbetween
@@ -116,7 +117,7 @@
             this.lbl_starsbetween.AutoSize = true;
             this.lbl_starsbetween.Location = new System.Drawing.Point(265, 15);
             this.lbl_starsbetween.Name = "lbl_starsbetween";
-            this.lbl_starsbetween.Size = new System.Drawing.Size(140, 17);
+            this.lbl_starsbetween.Size = new System.Drawing.Size(107, 13);
             this.lbl_starsbetween.TabIndex = 8;
             this.lbl_starsbetween.Text = "Stars Given Between";
             // 
@@ -124,14 +125,14 @@
             // 
             this.txt_StarsGivenHigh.Location = new System.Drawing.Point(502, 12);
             this.txt_StarsGivenHigh.Name = "txt_StarsGivenHigh";
-            this.txt_StarsGivenHigh.Size = new System.Drawing.Size(47, 22);
+            this.txt_StarsGivenHigh.Size = new System.Drawing.Size(47, 20);
             this.txt_StarsGivenHigh.TabIndex = 9;
             // 
             // txt_ReviewsMadeHigh
             // 
             this.txt_ReviewsMadeHigh.Location = new System.Drawing.Point(502, 39);
             this.txt_ReviewsMadeHigh.Name = "txt_ReviewsMadeHigh";
-            this.txt_ReviewsMadeHigh.Size = new System.Drawing.Size(47, 22);
+            this.txt_ReviewsMadeHigh.Size = new System.Drawing.Size(47, 20);
             this.txt_ReviewsMadeHigh.TabIndex = 12;
             // 
             // label2
@@ -139,14 +140,14 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(181, 42);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(0, 17);
+            this.label2.Size = new System.Drawing.Size(0, 13);
             this.label2.TabIndex = 11;
             // 
             // txt_ReviewsMadeLow
             // 
             this.txt_ReviewsMadeLow.Location = new System.Drawing.Point(418, 39);
             this.txt_ReviewsMadeLow.Name = "txt_ReviewsMadeLow";
-            this.txt_ReviewsMadeLow.Size = new System.Drawing.Size(40, 22);
+            this.txt_ReviewsMadeLow.Size = new System.Drawing.Size(40, 20);
             this.txt_ReviewsMadeLow.TabIndex = 10;
             // 
             // lbl_and1
@@ -154,7 +155,7 @@
             this.lbl_and1.AutoSize = true;
             this.lbl_and1.Location = new System.Drawing.Point(464, 15);
             this.lbl_and1.Name = "lbl_and1";
-            this.lbl_and1.Size = new System.Drawing.Size(32, 17);
+            this.lbl_and1.Size = new System.Drawing.Size(25, 13);
             this.lbl_and1.TabIndex = 13;
             this.lbl_and1.Text = "and";
             // 
@@ -173,7 +174,7 @@
             this.lbl_reviewbetween.AutoSize = true;
             this.lbl_reviewbetween.Location = new System.Drawing.Point(253, 42);
             this.lbl_reviewbetween.Name = "lbl_reviewbetween";
-            this.lbl_reviewbetween.Size = new System.Drawing.Size(159, 17);
+            this.lbl_reviewbetween.Size = new System.Drawing.Size(124, 13);
             this.lbl_reviewbetween.TabIndex = 15;
             this.lbl_reviewbetween.Text = "Reviews Given Between";
             // 
@@ -192,7 +193,7 @@
             this.lbl_and2.AutoSize = true;
             this.lbl_and2.Location = new System.Drawing.Point(464, 42);
             this.lbl_and2.Name = "lbl_and2";
-            this.lbl_and2.Size = new System.Drawing.Size(32, 17);
+            this.lbl_and2.Size = new System.Drawing.Size(25, 13);
             this.lbl_and2.TabIndex = 17;
             this.lbl_and2.Text = "and";
             // 
@@ -201,7 +202,7 @@
             this.lbl_TotalReviews.AutoSize = true;
             this.lbl_TotalReviews.Location = new System.Drawing.Point(12, 145);
             this.lbl_TotalReviews.Name = "lbl_TotalReviews";
-            this.lbl_TotalReviews.Size = new System.Drawing.Size(112, 17);
+            this.lbl_TotalReviews.Size = new System.Drawing.Size(87, 13);
             this.lbl_TotalReviews.TabIndex = 18;
             this.lbl_TotalReviews.Text = "Total Reviews: 0";
             // 
@@ -210,7 +211,7 @@
             this.lbl_TotalReviewers.AutoSize = true;
             this.lbl_TotalReviewers.Location = new System.Drawing.Point(119, 145);
             this.lbl_TotalReviewers.Name = "lbl_TotalReviewers";
-            this.lbl_TotalReviewers.Size = new System.Drawing.Size(125, 17);
+            this.lbl_TotalReviewers.Size = new System.Drawing.Size(96, 13);
             this.lbl_TotalReviewers.TabIndex = 19;
             this.lbl_TotalReviewers.Text = "Total Reviewers: 0";
             this.lbl_TotalReviewers.Click += new System.EventHandler(this.label6_Click);
@@ -220,7 +221,7 @@
             this.lbl_MaxUserReviews.AutoSize = true;
             this.lbl_MaxUserReviews.Location = new System.Drawing.Point(235, 145);
             this.lbl_MaxUserReviews.Name = "lbl_MaxUserReviews";
-            this.lbl_MaxUserReviews.Size = new System.Drawing.Size(170, 17);
+            this.lbl_MaxUserReviews.Size = new System.Drawing.Size(131, 13);
             this.lbl_MaxUserReviews.TabIndex = 20;
             this.lbl_MaxUserReviews.Text = "Max Reviews by a User: 0";
             // 
@@ -239,7 +240,7 @@
             this.cmb_TableNames.FormattingEnabled = true;
             this.cmb_TableNames.Location = new System.Drawing.Point(105, 72);
             this.cmb_TableNames.Name = "cmb_TableNames";
-            this.cmb_TableNames.Size = new System.Drawing.Size(121, 24);
+            this.cmb_TableNames.Size = new System.Drawing.Size(121, 21);
             this.cmb_TableNames.TabIndex = 22;
             this.cmb_TableNames.SelectedIndexChanged += new System.EventHandler(this.cmb_TableNames_SelectedIndexChanged);
             // 
@@ -248,7 +249,7 @@
             this.lbl_DropDown.AutoSize = true;
             this.lbl_DropDown.Location = new System.Drawing.Point(12, 72);
             this.lbl_DropDown.Name = "lbl_DropDown";
-            this.lbl_DropDown.Size = new System.Drawing.Size(87, 17);
+            this.lbl_DropDown.Size = new System.Drawing.Size(67, 13);
             this.lbl_DropDown.TabIndex = 23;
             this.lbl_DropDown.Text = "Select Table";
             // 
@@ -272,10 +273,19 @@
             this.btn_SaveToTable.UseVisualStyleBackColor = true;
             this.btn_SaveToTable.Click += new System.EventHandler(this.btn_SaveToTable_Click);
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(9, 517);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(217, 23);
+            this.progressBar1.TabIndex = 26;
+            this.progressBar1.Visible = false;
+            // 
             // frm_Main
             // 
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(817, 552);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.btn_SaveToTable);
             this.Controls.Add(this.btn_DeleteTable);
             this.Controls.Add(this.lbl_DropDown);
@@ -334,6 +344,9 @@
         private System.Windows.Forms.Label lbl_DropDown;
         private System.Windows.Forms.Button btn_DeleteTable;
         private System.Windows.Forms.Button btn_SaveToTable;
+        private System.Windows.Forms.ProgressBar progressBar1;
+
+        
 
         //this is handling for the tableselectbox
         public class NameValue
