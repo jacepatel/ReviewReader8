@@ -18,6 +18,7 @@ namespace ReviewReader
     {
         private ReviewReader.Properties.Settings settings = new Settings();
         public static int numOfItems = 0;
+        private bool connected = false;
         public frm_sqlConnection()
         {
             InitializeComponent();
@@ -108,21 +109,44 @@ namespace ReviewReader
                 settings.serverName = tbx_serverName.Text;
                 settings.password = tbx_password.Text;
                 GB_connToDB.Enabled = true;
+                connected = true;
                 refreshComboBox();
             }
             catch(MySqlException ex)
             {
+                lbl_Connected.Text = "Not Connected";
+                lbl_Connected.ForeColor = Color.Red;
                 MessageBox.Show(ex.Message);
+                connected = false;
+
 
             }
         }
 
         private void btn_Ok_Click(object sender, EventArgs e)
         {
-            settings.selectedDatabase = cmb_databaseNames.Text;
-            settings.ItemReviews = new ConnectionStringSettings("ItemReview", "server=" + settings.serverName + ";user id=" + settings.userId + ";password=" + settings.password + ";database=" + cmb_databaseNames.Text +";persistsecurityinfo=True", "MySql.Data.MySqlClient").ToString();
-            settings.Save();
+            
             Close();
+        }
+
+        private void frm_sqlConnection_Load(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void frm_sqlConnection_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(connected)
+            {
+                this.DialogResult = System.Windows.Forms.DialogResult.OK;
+                settings.selectedDatabase = cmb_databaseNames.Text;
+                settings.ItemReviews = new ConnectionStringSettings("ItemReview", "server=" + settings.serverName + ";user id=" + settings.userId + ";password=" + settings.password + ";database=" + cmb_databaseNames.Text + ";persistsecurityinfo=True", "MySql.Data.MySqlClient").ToString();
+                settings.Save();
+            }
+            else
+            {
+                this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            }
         }
     }
 }

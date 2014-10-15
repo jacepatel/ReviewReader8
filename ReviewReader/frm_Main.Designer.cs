@@ -313,6 +313,7 @@
             this.Controls.Add(this.loadDb);
             this.Name = "frm_Main";
             this.Text = "Review Reader";
+            this.Load += new System.EventHandler(this.frm_Main_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Reviews)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

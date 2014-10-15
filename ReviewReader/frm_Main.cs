@@ -15,6 +15,7 @@ using Microsoft.VisualBasic;
 using MySql.Data.MySqlClient;
 using System.Configuration;
 using System.Diagnostics;
+using System.Windows;
 
 namespace ReviewReader
 {
@@ -26,23 +27,9 @@ namespace ReviewReader
         public frm_Main()
         {
             InitializeComponent();
-            frm_sqlConnection sqlFrm = new frm_sqlConnection();
-            sqlFrm.ShowDialog();
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            //males the combo box select only
-            cmb_TableNames.DropDownStyle = ComboBoxStyle.DropDownList;
-                
-            //initialize the combo box values
-            List<string> tableNames = Program.getTablesInDatabase();
-            foreach (string tableName in tableNames)
-            {
-                NameValue n1 = new NameValue(tableName, tableName);
-                cmb_TableNames.Items.Add(n1);
-            }
-            if (cmb_TableNames.Items.Count > 0)
-                cmb_TableNames.SelectedIndex = 0;
-            Program._initprogress += new Program.initprogress(initprogress);
-            Program._progress += new Program.progress(progress);
+            
+
+           
 
         }
 
@@ -70,7 +57,7 @@ namespace ReviewReader
             {
                 MessageBox.Show("This may take up to 30 minutes, will be faster soon");
 
-
+                
                 System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
                 Program.ReadFile(filePath, cmb_TableNames.Text);
                 System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
@@ -295,7 +282,12 @@ namespace ReviewReader
         //Button to export the reviews to a text file
         private void btn_ExportToCSV_Click(object sender, EventArgs e)
         {
-
+            System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
+            if (cmb_TableNames.Text == "")
+            {
+                MessageBox.Show("Please select a table");
+                return;
+            }
             string openClose = "--";
             List<review> printTable = (List<review>)dgv_Reviews.DataSource;
             var csv = new StringBuilder();
@@ -349,6 +341,7 @@ namespace ReviewReader
                         sw.Write(string.Format("{0}{1}", openClose, Environment.NewLine));
                     }
                 }
+                System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
                 MessageBox.Show(fDialog.FileName.ToString());
             }
 
@@ -468,8 +461,8 @@ namespace ReviewReader
         //Button to save current data to a new table
         private void btn_SaveToTable_Click(object sender, EventArgs e)
         {
-           
-                if (cmb_TableNames.Text == null)
+            System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
+                if (cmb_TableNames.Text == "")
                 {
                     MessageBox.Show("Please select a table");
                     return;
@@ -501,16 +494,49 @@ namespace ReviewReader
                     command.Parameters.AddWithValue("@IsAmazonVerifiedPurchase", r.IsAmazonVerifiedPurchase);
                     command.Parameters.AddWithValue("@LongReview", r.LongReview);
                     //add some error handling around this
-                    command.ExecuteNonQuery();
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
                 currentTableName = "";
                 conn.Close();
+                System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
+                MessageBox.Show("Table Saved", "Saved");
             
         }
 
         private void lbl_reviewbetween_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void frm_Main_Load(object sender, EventArgs e)
+        {
+            frm_sqlConnection sqlFrm = new frm_sqlConnection();
+            if (sqlFrm.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+
+                this.FormBorderStyle = FormBorderStyle.FixedSingle;
+                //males the combo box select only
+                cmb_TableNames.DropDownStyle = ComboBoxStyle.DropDownList;
+
+                //initialize the combo box values
+                List<string> tableNames = Program.getTablesInDatabase();
+                foreach (string tableName in tableNames)
+                {
+                    NameValue n1 = new NameValue(tableName, tableName);
+                    cmb_TableNames.Items.Add(n1);
+                }
+                if (cmb_TableNames.Items.Count > 0)
+                    cmb_TableNames.SelectedIndex = 0;                
+            }
+            else
+                Close();
         }
     }
 }

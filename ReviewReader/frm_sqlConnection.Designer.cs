@@ -170,6 +170,8 @@
             this.Controls.Add(this.lbl_serverName);
             this.Name = "frm_sqlConnection";
             this.Text = "Connect to Database";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frm_sqlConnection_FormClosing);
+            this.Load += new System.EventHandler(this.frm_sqlConnection_Load);
             this.GB_connToDB.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
