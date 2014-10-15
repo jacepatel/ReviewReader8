@@ -59,7 +59,7 @@ namespace ReviewReader
             //ReadFile(file);
 
         }
-
+        //Creates a table in the dbv
         public static bool createTable(string tableName)
         {
 
@@ -91,6 +91,7 @@ namespace ReviewReader
             return true;
         }
 
+        //Retrieves teh tables in db
         public static List<string> getTablesInDatabase()
         {
 
@@ -117,6 +118,7 @@ namespace ReviewReader
         }
 
 
+        //Loads the file to a table in DB
         public static void ReadFile(string file, string writeTableName)
         {
 
@@ -458,6 +460,7 @@ namespace ReviewReader
 
 
         }
+        
         private static void OnInitprogress(object sender, EventArgs e)
         {
             if (_initprogress != null)

@@ -84,6 +84,7 @@ namespace ReviewReader
         }
 
 
+        //Executes a command parsed at the db and returns relevant reviews
         public List<review> getReviewsFromDB(string commandText)
         {
             List<review> qryReviews = new List<review>();
@@ -130,6 +131,7 @@ namespace ReviewReader
             return qryReviews;
         }
 
+        //Parses the list of reviews and applies the updates to total reviews, total users, max reviews by user
         public void displayReviewsOnScreen(List<review> displayReviews)
         {
             List<review> qryReviews = displayReviews;
@@ -172,6 +174,7 @@ namespace ReviewReader
 
         }
 
+        //On Click event to show all reviews in selected table
         private void btn_ViewReviews_Click(object sender, EventArgs e)
         {
             if (cmb_TableNames.Text == null || cmb_TableNames.Text == "")
@@ -190,7 +193,7 @@ namespace ReviewReader
 
         }
 
-
+        //Select the file to upload button on screen
         private void btn_SelectFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog fDialog = new OpenFileDialog();
@@ -203,6 +206,7 @@ namespace ReviewReader
             }
         }
 
+        //Select reviews with stars given
         private void btn_SelectReviewsWithParams_Click(object sender, EventArgs e)
         {
             if (cmb_TableNames.Text == null || cmb_TableNames.Text == "")
@@ -245,6 +249,7 @@ namespace ReviewReader
 
         }
 
+        //Selects the reviews by users with set number of reviews
         private void btn_SelectUsersWithParams_Click(object sender, EventArgs e)
         {
             //Check if a table is selected
@@ -287,6 +292,7 @@ namespace ReviewReader
             txt_ReviewsMadeHigh.Text = "";
         }
 
+        //Button to export the reviews to a text file
         private void btn_ExportToCSV_Click(object sender, EventArgs e)
         {
 
@@ -351,6 +357,7 @@ namespace ReviewReader
 
         }
 
+        //On click of reviewer cell it displays all the reviews by the user
         private void dgv_Reviews_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (cmb_TableNames.Text == null || cmb_TableNames.Text == "")
@@ -396,6 +403,7 @@ namespace ReviewReader
 
         }
 
+        //Refreshes the combo box with up to date list of tables
         public void refreshComboBox()
         {
             cmb_TableNames.Items.Clear();
@@ -410,6 +418,7 @@ namespace ReviewReader
                 cmb_TableNames.SelectedIndex = 0;
         }
 
+        //Create Table in Database button
         private void btn_createTable_Click(object sender, EventArgs e)
         {
             var tableName = Interaction.InputBox("Please Enter a Table Name (No Spaces, text characters only)", "Table Name", "ReviewsTableName");
@@ -430,7 +439,7 @@ namespace ReviewReader
 
         }
 
-
+        //Button to delete table
         private void btn_DeleteTable_Click(object sender, EventArgs e)
         {
             if (cmb_TableNames.Text.ToString() == null || cmb_TableNames.Text == "")
@@ -456,6 +465,7 @@ namespace ReviewReader
 
         }
 
+        //Button to save current data to a new table
         private void btn_SaveToTable_Click(object sender, EventArgs e)
         {
            
