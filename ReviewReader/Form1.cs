@@ -36,6 +36,7 @@ namespace TextReader
         }
 
 
+        //This calls the main program method
         private void loadDb_Click(object sender, EventArgs e)
         {
             if (filePath != "")
@@ -50,6 +51,7 @@ namespace TextReader
         }
 
 
+        //Accepts 
         public static List<review> getReviewsFromDB(string commandText)
         {
             var connString = ConfigurationManager.ConnectionStrings["ItemReviews"].ConnectionString;

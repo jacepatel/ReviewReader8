@@ -14,3 +14,7 @@ C:\GitHUB\ReviewReader8\ReviewReader\obj\Debug\ReviewReader9.csprojResolveAssemb
 C:\GitHUB\ReviewReader8\ReviewReader\obj\Debug\TextReader.Form1.resources
 C:\GitHUB\ReviewReader8\ReviewReader\obj\Debug\TextReader.Properties.Resources.resources
 C:\GitHUB\ReviewReader8\ReviewReader\obj\Debug\ReviewReader9.csproj.GenerateResource.Cache
+C:\GitHUB\ReviewReader8\ReviewReader\bin\Debug\TextReader.exe.manifest
+C:\GitHUB\ReviewReader8\ReviewReader\bin\Debug\TextReader.application
+C:\GitHUB\ReviewReader8\ReviewReader\obj\Debug\TextReader.exe.manifest
+C:\GitHUB\ReviewReader8\ReviewReader\obj\Debug\TextReader.application
