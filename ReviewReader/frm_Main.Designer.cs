@@ -77,21 +77,21 @@
             // 
             // btn_ViewReviews
             // 
-            this.btn_ViewReviews.Location = new System.Drawing.Point(605, 85);
+            this.btn_ViewReviews.Location = new System.Drawing.Point(3, 99);
             this.btn_ViewReviews.Name = "btn_ViewReviews";
-            this.btn_ViewReviews.Size = new System.Drawing.Size(184, 27);
+            this.btn_ViewReviews.Size = new System.Drawing.Size(216, 26);
             this.btn_ViewReviews.TabIndex = 3;
-            this.btn_ViewReviews.Text = "View All Reviews";
+            this.btn_ViewReviews.Text = "View All Reviews in Selected Table";
             this.btn_ViewReviews.UseVisualStyleBackColor = true;
             this.btn_ViewReviews.Click += new System.EventHandler(this.btn_ViewReviews_Click);
             // 
             // btn_SelectUsersWithParams
             // 
-            this.btn_SelectUsersWithParams.Location = new System.Drawing.Point(555, 41);
+            this.btn_SelectUsersWithParams.Location = new System.Drawing.Point(555, 37);
             this.btn_SelectUsersWithParams.Name = "btn_SelectUsersWithParams";
             this.btn_SelectUsersWithParams.Size = new System.Drawing.Size(261, 23);
             this.btn_SelectUsersWithParams.TabIndex = 5;
-            this.btn_SelectUsersWithParams.Text = "Select Users With Parameters";
+            this.btn_SelectUsersWithParams.Text = "Select Reviews By Number Given";
             this.btn_SelectUsersWithParams.UseVisualStyleBackColor = true;
             this.btn_SelectUsersWithParams.Click += new System.EventHandler(this.btn_SelectUsersWithParams_Click);
             // 
@@ -115,7 +115,7 @@
             // lbl_starsbetween
             // 
             this.lbl_starsbetween.AutoSize = true;
-            this.lbl_starsbetween.Location = new System.Drawing.Point(265, 15);
+            this.lbl_starsbetween.Location = new System.Drawing.Point(305, 19);
             this.lbl_starsbetween.Name = "lbl_starsbetween";
             this.lbl_starsbetween.Size = new System.Drawing.Size(107, 13);
             this.lbl_starsbetween.TabIndex = 8;
@@ -123,16 +123,16 @@
             // 
             // txt_StarsGivenHigh
             // 
-            this.txt_StarsGivenHigh.Location = new System.Drawing.Point(502, 12);
+            this.txt_StarsGivenHigh.Location = new System.Drawing.Point(495, 12);
             this.txt_StarsGivenHigh.Name = "txt_StarsGivenHigh";
-            this.txt_StarsGivenHigh.Size = new System.Drawing.Size(47, 20);
+            this.txt_StarsGivenHigh.Size = new System.Drawing.Size(40, 20);
             this.txt_StarsGivenHigh.TabIndex = 9;
             // 
             // txt_ReviewsMadeHigh
             // 
-            this.txt_ReviewsMadeHigh.Location = new System.Drawing.Point(502, 39);
+            this.txt_ReviewsMadeHigh.Location = new System.Drawing.Point(495, 39);
             this.txt_ReviewsMadeHigh.Name = "txt_ReviewsMadeHigh";
-            this.txt_ReviewsMadeHigh.Size = new System.Drawing.Size(47, 20);
+            this.txt_ReviewsMadeHigh.Size = new System.Drawing.Size(40, 20);
             this.txt_ReviewsMadeHigh.TabIndex = 12;
             // 
             // label2
@@ -172,19 +172,20 @@
             // lbl_reviewbetween
             // 
             this.lbl_reviewbetween.AutoSize = true;
-            this.lbl_reviewbetween.Location = new System.Drawing.Point(253, 42);
+            this.lbl_reviewbetween.Location = new System.Drawing.Point(273, 42);
             this.lbl_reviewbetween.Name = "lbl_reviewbetween";
-            this.lbl_reviewbetween.Size = new System.Drawing.Size(124, 13);
+            this.lbl_reviewbetween.Size = new System.Drawing.Size(139, 13);
             this.lbl_reviewbetween.TabIndex = 15;
-            this.lbl_reviewbetween.Text = "Reviews Given Between";
+            this.lbl_reviewbetween.Text = "Number of Reviews by User";
+            this.lbl_reviewbetween.Click += new System.EventHandler(this.lbl_reviewbetween_Click);
             // 
             // btn_SelectReviewsParams
             // 
-            this.btn_SelectReviewsParams.Location = new System.Drawing.Point(555, 12);
+            this.btn_SelectReviewsParams.Location = new System.Drawing.Point(555, 7);
             this.btn_SelectReviewsParams.Name = "btn_SelectReviewsParams";
             this.btn_SelectReviewsParams.Size = new System.Drawing.Size(261, 23);
             this.btn_SelectReviewsParams.TabIndex = 16;
-            this.btn_SelectReviewsParams.Text = "Select Reviews With Parameters";
+            this.btn_SelectReviewsParams.Text = "Select Reviews By Stars Given";
             this.btn_SelectReviewsParams.UseVisualStyleBackColor = true;
             this.btn_SelectReviewsParams.Click += new System.EventHandler(this.btn_SelectReviewsWithParams_Click);
             // 
@@ -209,7 +210,7 @@
             // lbl_TotalReviewers
             // 
             this.lbl_TotalReviewers.AutoSize = true;
-            this.lbl_TotalReviewers.Location = new System.Drawing.Point(119, 145);
+            this.lbl_TotalReviewers.Location = new System.Drawing.Point(181, 145);
             this.lbl_TotalReviewers.Name = "lbl_TotalReviewers";
             this.lbl_TotalReviewers.Size = new System.Drawing.Size(96, 13);
             this.lbl_TotalReviewers.TabIndex = 19;
@@ -219,7 +220,7 @@
             // lbl_MaxUserReviews
             // 
             this.lbl_MaxUserReviews.AutoSize = true;
-            this.lbl_MaxUserReviews.Location = new System.Drawing.Point(235, 145);
+            this.lbl_MaxUserReviews.Location = new System.Drawing.Point(327, 145);
             this.lbl_MaxUserReviews.Name = "lbl_MaxUserReviews";
             this.lbl_MaxUserReviews.Size = new System.Drawing.Size(131, 13);
             this.lbl_MaxUserReviews.TabIndex = 20;
@@ -238,16 +239,16 @@
             // cmb_TableNames
             // 
             this.cmb_TableNames.FormattingEnabled = true;
-            this.cmb_TableNames.Location = new System.Drawing.Point(105, 72);
+            this.cmb_TableNames.Location = new System.Drawing.Point(85, 69);
             this.cmb_TableNames.Name = "cmb_TableNames";
-            this.cmb_TableNames.Size = new System.Drawing.Size(121, 21);
+            this.cmb_TableNames.Size = new System.Drawing.Size(134, 21);
             this.cmb_TableNames.TabIndex = 22;
             this.cmb_TableNames.SelectedIndexChanged += new System.EventHandler(this.cmb_TableNames_SelectedIndexChanged);
             // 
             // lbl_DropDown
             // 
             this.lbl_DropDown.AutoSize = true;
-            this.lbl_DropDown.Location = new System.Drawing.Point(12, 72);
+            this.lbl_DropDown.Location = new System.Drawing.Point(6, 72);
             this.lbl_DropDown.Name = "lbl_DropDown";
             this.lbl_DropDown.Size = new System.Drawing.Size(67, 13);
             this.lbl_DropDown.TabIndex = 23;

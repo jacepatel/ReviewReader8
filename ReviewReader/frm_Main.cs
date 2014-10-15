@@ -28,6 +28,10 @@ namespace ReviewReader
             InitializeComponent();
             frm_sqlConnection sqlFrm = new frm_sqlConnection();
             sqlFrm.ShowDialog();
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            //males the combo box select only
+            cmb_TableNames.DropDownStyle = ComboBoxStyle.DropDownList;
+                
             //initialize the combo box values
             List<string> tableNames = Program.getTablesInDatabase();
             foreach (string tableName in tableNames)
@@ -492,6 +496,11 @@ namespace ReviewReader
                 currentTableName = "";
                 conn.Close();
             
+        }
+
+        private void lbl_reviewbetween_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

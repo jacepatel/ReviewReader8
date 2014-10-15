@@ -7,14 +7,14 @@
     <framework targetVersion="4.5" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="TextReader.exe.manifest" size="6896">
+    <dependentAssembly dependencyType="install" codebase="TextReader.exe.manifest" size="9280">
       <assemblyIdentity name="TextReader.exe" version="1.0.0.0" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>/8bTQMgO7viyxTlY1k8G5PgRUZvwQI6TbXyWNXM45k4=</dsig:DigestValue>
+        <dsig:DigestValue>RoQKgIRtUaxagz1bDOrbGdEE5qvFs7mtsCYTNW4OyaM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
