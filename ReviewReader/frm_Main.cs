@@ -59,7 +59,11 @@ namespace ReviewReader
 
                 
                 System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
-                Program.ReadFile(filePath, cmb_TableNames.Text);
+                frm_databaseAction databaseAction = new frm_databaseAction();
+                readFileIntoDB action = new readFileIntoDB(databaseAction.ReadFile);                
+                databaseAction.Show();
+                databaseAction.Invoke(action, filePath, cmb_TableNames.Text);
+                //Program.ReadFile(filePath, cmb_TableNames.Text);
                 System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
 
 

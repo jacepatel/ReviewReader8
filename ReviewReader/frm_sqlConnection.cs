@@ -135,8 +135,8 @@ namespace ReviewReader
         }
 
         private void frm_sqlConnection_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if(connected)
+        {            
+            if (connected)
             {
                 this.DialogResult = System.Windows.Forms.DialogResult.OK;
                 settings.selectedDatabase = cmb_databaseNames.Text;
