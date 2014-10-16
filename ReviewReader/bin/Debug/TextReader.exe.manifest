@@ -142,14 +142,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TextReader.exe" size="49664">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TextReader.exe" size="50176">
       <assemblyIdentity name="TextReader" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>VzEMbwTGcL6Of9+SWMMTXlYdMU8k+0Ck60VFnjnm2lo=</dsig:DigestValue>
+        <dsig:DigestValue>yRHcIYmXZMMu6hQVGINLvsrxgE6t6CJ0ozwpm0COuAU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

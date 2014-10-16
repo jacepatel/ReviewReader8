@@ -82,13 +82,16 @@ namespace ReviewReader
             ") ENGINE=InnoDB DEFAULT CHARSET=latin1";
                 command.ExecuteNonQuery();
                 conn.Close();
+                return true;
             }
             catch (MySqlException ex)
             {
+                
                 MessageBox.Show(ex.Message);
+                return false;
             }
             //add some handling as to whether this create is successful or not
-            return true;
+           
         }
 
         //Retrieves teh tables in db

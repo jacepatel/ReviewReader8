@@ -27,9 +27,9 @@ namespace ReviewReader
         public frm_Main()
         {
             InitializeComponent();
-            
 
-           
+
+
 
         }
 
@@ -40,7 +40,7 @@ namespace ReviewReader
 
         private void initprogress(object param, EventArgs e)
         {
-            int count = (int)param/100;
+            int count = (int)param / 100;
             progressBar1.Step = count;
             progressBar1.Visible = true;
         }
@@ -57,7 +57,7 @@ namespace ReviewReader
             {
                 MessageBox.Show("This may take up to 30 minutes, will be faster soon");
 
-                
+
                 System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
                 Program.ReadFile(filePath, cmb_TableNames.Text);
                 System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
@@ -82,7 +82,7 @@ namespace ReviewReader
             {
                 conn.Open();
                 command.CommandText = commandText;
-                
+
 
                 MySqlDataReader reader = command.ExecuteReader();
 
@@ -103,11 +103,11 @@ namespace ReviewReader
                         r.LongReview = reader.GetString(8);
                         qryReviews.Add(r);
                     }
-                    catch(Exception ex)
-                    {                        
+                    catch (Exception ex)
+                    {
                         Debug.WriteLine(ex.Message);
                     }
-                    
+
                 }
             }
             catch (MySqlException ex)
@@ -122,14 +122,14 @@ namespace ReviewReader
         public void displayReviewsOnScreen(List<review> displayReviews)
         {
             List<review> qryReviews = displayReviews;
-            
+
             var query = from c in qryReviews select c;
             var users = query.ToList();
 
             //Hide 0, 2, 10
             //ask jace
             //feedback on loading
-            var totReviews = users.Count;            
+            var totReviews = users.Count;
             var maxReviews = (from r in users
                               group r by r.ReviewerId into grp
                               select new { reviewer = grp.Key, reviews = grp.Count() }).OrderByDescending(x => x.reviews).FirstOrDefault();
@@ -148,7 +148,7 @@ namespace ReviewReader
             {
                 if (maxReviews != null)
                     maxReviewsbyUser = maxReviews.reviews.ToString();
-                    
+
                 else
                     maxReviewsbyUser = "0";
             }
@@ -189,7 +189,7 @@ namespace ReviewReader
             if (fDialog.ShowDialog() == DialogResult.OK)
             {
                 filePath = fDialog.FileName.ToString();
-                MessageBox.Show(fDialog.FileName.ToString(),"File Opened");
+                MessageBox.Show(fDialog.FileName.ToString(), "File Opened");
             }
         }
 
@@ -386,7 +386,7 @@ namespace ReviewReader
                 string review = dgv_Reviews.CurrentCell.Value.ToString();
                 MessageBox.Show(review, "Long Review");
                 //format
-                
+
             }
 
         }
@@ -415,14 +415,17 @@ namespace ReviewReader
         private void btn_createTable_Click(object sender, EventArgs e)
         {
             var tableName = Interaction.InputBox("Please Enter a Table Name (No Spaces, text characters only)", "Table Name", "ReviewsTableName");
-
+            Regex lettersOnly = new Regex("^[a-zA-Z0-9]{1,25}$");
+            var matches = lettersOnly.Match(tableName);
             //Add Some Checks
-            if (tableName != "")
+            if (tableName != "" && matches.Success)
             {
                 bool tableSuccess = Program.createTable(tableName);
+                refreshComboBox();
+
             }
 
-            refreshComboBox();
+
 
         }
 
@@ -461,25 +464,39 @@ namespace ReviewReader
         //Button to save current data to a new table
         private void btn_SaveToTable_Click(object sender, EventArgs e)
         {
-            System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
-                if (cmb_TableNames.Text == "")
-                {
-                    MessageBox.Show("Please select a table");
-                    return;
-                }
+            var tableName = Interaction.InputBox("Please Enter a Table Name (No Spaces, text characters only)", "Table Name", "ReviewsTableName");
 
-                List<review> printTable = (List<review>)dgv_Reviews.DataSource;
+            Regex lettersOnly = new Regex("^[a-zA-Z0-9]{1,25}$");
+            var matches = lettersOnly.Match(tableName);
+            //Add Some Checks
+            bool tableSuccess = false;
+            if (tableName != "" && matches.Success)
+            {
+                tableSuccess = Program.createTable(tableName);
+
+            }
+            System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
+            //if (cmb_TableNames.Text == "")
+            //{
+            //    MessageBox.Show("Please select a table");
+            //    return;
+            //}
+            List<review> printTable = (List<review>)dgv_Reviews.DataSource;
+            if (printTable != null && tableSuccess)
+            {
+                
 
                 var connString = settings.ItemReviews;
                 MySqlConnection conn = new MySqlConnection(connString);
                 MySqlCommand command = conn.CreateCommand();
                 conn.Open();
 
-                command.CommandText = "INSERT INTO " + cmb_TableNames.Text + " VALUES(@ItemName, @ReviewersOfReview, @ReviewersOfReviewFoundHelpful, @StarsGiven, @ShortReview, @ReviewerId, @ReviewLocation, @IsAmazonVerifiedPurchase, @LongReview)";
+                command.CommandText = "INSERT INTO " + tableName + " VALUES(@ItemName, @ReviewersOfReview, @ReviewersOfReviewFoundHelpful, @StarsGiven, @ShortReview, @ReviewerId, @ReviewLocation, @IsAmazonVerifiedPurchase, @LongReview)";
                 command.Prepare();
 
 
                 //Add some error handling if nothing is parsed
+
                 foreach (review r in printTable)
                 {
                     command.Parameters.Clear();
@@ -507,7 +524,33 @@ namespace ReviewReader
                 conn.Close();
                 System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
                 MessageBox.Show("Table Saved", "Saved");
-            
+            }
+            else if(!tableSuccess)
+            {
+                
+                
+            }
+            else
+            {
+                try
+                {
+                    MessageBox.Show("There is no table to save", "ERROR");
+                    var connString = settings.ItemReviews;
+                    MySqlConnection conn = new MySqlConnection(connString);
+                    MySqlCommand command = conn.CreateCommand();
+                    conn.Open();
+                    command.CommandText = "DROP TABLE " + tableName;
+                    command.ExecuteNonQuery();
+                    conn.Close();
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                refreshComboBox();
+            }
+
+
         }
 
         private void lbl_reviewbetween_Click(object sender, EventArgs e)
@@ -533,7 +576,7 @@ namespace ReviewReader
                     cmb_TableNames.Items.Add(n1);
                 }
                 if (cmb_TableNames.Items.Count > 0)
-                    cmb_TableNames.SelectedIndex = 0;                
+                    cmb_TableNames.SelectedIndex = 0;
             }
             else
                 Close();
