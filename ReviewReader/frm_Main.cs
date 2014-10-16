@@ -27,23 +27,12 @@ namespace ReviewReader
         public frm_Main()
         {
             InitializeComponent();
-            
 
-           
+
+
 
         }
 
-        private void progress(object param, EventArgs e)
-        {
-            progressBar1.PerformStep();
-        }
-
-        private void initprogress(object param, EventArgs e)
-        {
-            int count = (int)param/100;
-            progressBar1.Step = count;
-            progressBar1.Visible = true;
-        }
 
 
         private void loadDb_Click(object sender, EventArgs e)
@@ -57,11 +46,12 @@ namespace ReviewReader
             {
                 MessageBox.Show("This may take up to 30 minutes, will be faster soon");
 
-                
+
                 System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
-                frm_databaseAction databaseAction = new frm_databaseAction();
-                readFileIntoDB action = new readFileIntoDB(databaseAction.ReadFile);                
-                databaseAction.Show();
+                frm_databaseAction databaseAction = new frm_databaseAction(this);
+                readFileIntoDB action = new readFileIntoDB(databaseAction.ReadFile);
+                databaseAction.Show(this);
+                this.Enabled = false;
                 databaseAction.Invoke(action, filePath, cmb_TableNames.Text);
                 //Program.ReadFile(filePath, cmb_TableNames.Text);
                 System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
@@ -86,7 +76,7 @@ namespace ReviewReader
             {
                 conn.Open();
                 command.CommandText = commandText;
-                
+
 
                 MySqlDataReader reader = command.ExecuteReader();
 
@@ -107,11 +97,11 @@ namespace ReviewReader
                         r.LongReview = reader.GetString(8);
                         qryReviews.Add(r);
                     }
-                    catch(Exception ex)
-                    {                        
+                    catch (Exception ex)
+                    {
                         Debug.WriteLine(ex.Message);
                     }
-                    
+
                 }
             }
             catch (MySqlException ex)
@@ -126,14 +116,14 @@ namespace ReviewReader
         public void displayReviewsOnScreen(List<review> displayReviews)
         {
             List<review> qryReviews = displayReviews;
-            
+
             var query = from c in qryReviews select c;
             var users = query.ToList();
 
             //Hide 0, 2, 10
             //ask jace
             //feedback on loading
-            var totReviews = users.Count;            
+            var totReviews = users.Count;
             var maxReviews = (from r in users
                               group r by r.ReviewerId into grp
                               select new { reviewer = grp.Key, reviews = grp.Count() }).OrderByDescending(x => x.reviews).FirstOrDefault();
@@ -152,7 +142,7 @@ namespace ReviewReader
             {
                 if (maxReviews != null)
                     maxReviewsbyUser = maxReviews.reviews.ToString();
-                    
+
                 else
                     maxReviewsbyUser = "0";
             }
@@ -193,7 +183,7 @@ namespace ReviewReader
             if (fDialog.ShowDialog() == DialogResult.OK)
             {
                 filePath = fDialog.FileName.ToString();
-                MessageBox.Show(fDialog.FileName.ToString(),"File Opened");
+                MessageBox.Show(fDialog.FileName.ToString(), "File Opened");
             }
         }
 
@@ -390,7 +380,7 @@ namespace ReviewReader
                 string review = dgv_Reviews.CurrentCell.Value.ToString();
                 MessageBox.Show(review, "Long Review");
                 //format
-                
+
             }
 
         }
@@ -420,13 +410,20 @@ namespace ReviewReader
         {
             var tableName = Interaction.InputBox("Please Enter a Table Name (No Spaces, text characters only)", "Table Name", "ReviewsTableName");
 
-            //Add Some Checks
-            if (tableName != "")
+            string re1 = "((?:[a-z][a-z0-9]*))";	// Variable Name 1
+
+            Regex r = new Regex(re1, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            Match m = r.Match(tableName);
+            if (m.Success)
             {
+
                 bool tableSuccess = Program.createTable(tableName);
+
+
+                refreshComboBox();
             }
 
-            refreshComboBox();
+            //Add Some Checks
 
         }
 
@@ -465,53 +462,59 @@ namespace ReviewReader
         //Button to save current data to a new table
         private void btn_SaveToTable_Click(object sender, EventArgs e)
         {
-            System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
-                if (cmb_TableNames.Text == "")
-                {
-                    MessageBox.Show("Please select a table");
-                    return;
-                }
 
-                List<review> printTable = (List<review>)dgv_Reviews.DataSource;
+            frm_databaseAction dbAction = new frm_databaseAction(this);
+            saveTabletoDB saveDb = new saveTabletoDB(dbAction.saveTable);
+            dbAction.Show();
+            dbAction.Invoke(saveDb, dgv_Reviews);
+            this.Enabled = false;
+            //System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
+            //if (cmb_TableNames.Text == "")
+            //{
+            //    MessageBox.Show("Please select a table");
+            //    return;
+            //}
 
-                var connString = settings.ItemReviews;
-                MySqlConnection conn = new MySqlConnection(connString);
-                MySqlCommand command = conn.CreateCommand();
-                conn.Open();
+            //List<review> printTable = (List<review>)dgv_Reviews.DataSource;
 
-                command.CommandText = "INSERT INTO " + cmb_TableNames.Text + " VALUES(@ItemName, @ReviewersOfReview, @ReviewersOfReviewFoundHelpful, @StarsGiven, @ShortReview, @ReviewerId, @ReviewLocation, @IsAmazonVerifiedPurchase, @LongReview)";
-                command.Prepare();
+            //var connString = settings.ItemReviews;
+            //MySqlConnection conn = new MySqlConnection(connString);
+            //MySqlCommand command = conn.CreateCommand();
+            //conn.Open();
+
+            //command.CommandText = "INSERT INTO " + cmb_TableNames.Text + " VALUES(@ItemName, @ReviewersOfReview, @ReviewersOfReviewFoundHelpful, @StarsGiven, @ShortReview, @ReviewerId, @ReviewLocation, @IsAmazonVerifiedPurchase, @LongReview)";
+            //command.Prepare();
 
 
-                //Add some error handling if nothing is parsed
-                foreach (review r in printTable)
-                {
-                    command.Parameters.Clear();
-                    //remove the ReviewId and ItemId, fuck em
-                    command.Parameters.AddWithValue("@ItemName", r.ItemName);
-                    command.Parameters.AddWithValue("@ReviewersOfReview", r.ReviewersOfReview);
-                    command.Parameters.AddWithValue("@ReviewersOfReviewFoundHelpful", r.ReviewersOfReviewFoundHelpful);
-                    command.Parameters.AddWithValue("@StarsGiven", r.StarsGiven);
-                    command.Parameters.AddWithValue("@ShortReview", r.ShortReview);
-                    command.Parameters.AddWithValue("@ReviewerId", r.ReviewerId);
-                    command.Parameters.AddWithValue("@ReviewLocation", r.ReviewLocation);
-                    command.Parameters.AddWithValue("@IsAmazonVerifiedPurchase", r.IsAmazonVerifiedPurchase);
-                    command.Parameters.AddWithValue("@LongReview", r.LongReview);
-                    //add some error handling around this
-                    try
-                    {
-                        command.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                }
-                currentTableName = "";
-                conn.Close();
-                System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
-                MessageBox.Show("Table Saved", "Saved");
-            
+            ////Add some error handling if nothing is parsed
+            //foreach (review r in printTable)
+            //{
+            //    command.Parameters.Clear();
+            //    //remove the ReviewId and ItemId, fuck em
+            //    command.Parameters.AddWithValue("@ItemName", r.ItemName);
+            //    command.Parameters.AddWithValue("@ReviewersOfReview", r.ReviewersOfReview);
+            //    command.Parameters.AddWithValue("@ReviewersOfReviewFoundHelpful", r.ReviewersOfReviewFoundHelpful);
+            //    command.Parameters.AddWithValue("@StarsGiven", r.StarsGiven);
+            //    command.Parameters.AddWithValue("@ShortReview", r.ShortReview);
+            //    command.Parameters.AddWithValue("@ReviewerId", r.ReviewerId);
+            //    command.Parameters.AddWithValue("@ReviewLocation", r.ReviewLocation);
+            //    command.Parameters.AddWithValue("@IsAmazonVerifiedPurchase", r.IsAmazonVerifiedPurchase);
+            //    command.Parameters.AddWithValue("@LongReview", r.LongReview);
+            //    //add some error handling around this
+            //    try
+            //    {
+            //        command.ExecuteNonQuery();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        MessageBox.Show(ex.Message);
+            //    }
+            //}
+            //currentTableName = "";
+            //conn.Close();
+            //System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
+            //MessageBox.Show("Table Saved", "Saved");
+
         }
 
         private void lbl_reviewbetween_Click(object sender, EventArgs e)
@@ -537,7 +540,7 @@ namespace ReviewReader
                     cmb_TableNames.Items.Add(n1);
                 }
                 if (cmb_TableNames.Items.Count > 0)
-                    cmb_TableNames.SelectedIndex = 0;                
+                    cmb_TableNames.SelectedIndex = 0;
             }
             else
                 Close();

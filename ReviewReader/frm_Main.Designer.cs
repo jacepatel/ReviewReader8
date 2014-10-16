@@ -52,7 +52,6 @@
             this.lbl_DropDown = new System.Windows.Forms.Label();
             this.btn_DeleteTable = new System.Windows.Forms.Button();
             this.btn_SaveToTable = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Reviews)).BeginInit();
             this.SuspendLayout();
             // 
@@ -274,19 +273,10 @@
             this.btn_SaveToTable.UseVisualStyleBackColor = true;
             this.btn_SaveToTable.Click += new System.EventHandler(this.btn_SaveToTable_Click);
             // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(9, 517);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(217, 23);
-            this.progressBar1.TabIndex = 26;
-            this.progressBar1.Visible = false;
-            // 
             // frm_Main
             // 
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(817, 552);
-            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.btn_SaveToTable);
             this.Controls.Add(this.btn_DeleteTable);
             this.Controls.Add(this.lbl_DropDown);
@@ -346,7 +336,6 @@
         private System.Windows.Forms.Label lbl_DropDown;
         private System.Windows.Forms.Button btn_DeleteTable;
         private System.Windows.Forms.Button btn_SaveToTable;
-        private System.Windows.Forms.ProgressBar progressBar1;
 
         
 

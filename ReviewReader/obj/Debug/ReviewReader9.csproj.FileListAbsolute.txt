@@ -22,7 +22,6 @@ C:\GitHUB\ReviewReader8\ReviewReader\obj\Debug\TextReader.pdb
 C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\bin\Debug\TextReader.exe.config
 C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\TextReader.exe
 C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\TextReader.pdb
-C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\ReviewReader9.csprojResolveAssemblyReference.cache
 C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\ReviewReader.frm_Main.resources
 C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\ReviewReader.frm_sqlConnection.resources
 C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\TextReader.Properties.Resources.resources
@@ -62,3 +61,5 @@ C:\Users\samta_000\Documents\GitHub\ReviewReader8\ReviewReader\bin\Debug\EntityF
 C:\Users\samta_000\Documents\GitHub\ReviewReader8\ReviewReader\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\samta_000\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\TextReader.exe.manifest
 C:\Users\samta_000\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\TextReader.application
+C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\ReviewReader.frm_databaseAction.resources
+C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\ReviewReader9.csprojResolveAssemblyReference.cache

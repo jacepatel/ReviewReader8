@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Microsoft.VisualBasic;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,27 +7,39 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TextReader.EntityFramework;
 
 namespace ReviewReader
 {
 
     public delegate void readFileIntoDB(string file, string writeTableName);
+    public delegate void saveTabletoDB(DataGridView dgv_Reviews);
+
     public partial class frm_databaseAction : Form
     {
+
         private static Properties.Settings settings = new Properties.Settings();
+        private frm_Main mainwindows;
 
-
-        public frm_databaseAction()
+        public frm_databaseAction(frm_Main form)
         {
             InitializeComponent();
+            mainwindows = form;
         }
         //public void readFileIntoDB(readFileIntoDB readFile)
         //{
         //    ReadFile(
         //}
+
+
+
+
         public void ReadFile(string file, string writeTableName)
         {
 
@@ -59,6 +72,7 @@ namespace ReviewReader
                     //Open and read file while line is not ended
                     while ((line = fileRead.ReadLine()) != null)
                     {
+
                         line = line.Trim();
                         //Check if its a blank line
                         if (string.IsNullOrWhiteSpace(line))
@@ -306,11 +320,22 @@ namespace ReviewReader
 
                     if (allItems != null)
                     {
-                        progressBar1.Step = allItems.Count / 100;
+                        this.Invoke((MethodInvoker)delegate
+                        {
+                            progressBar1.ForeColor = Color.Blue;
+                            progressBar1.Style = ProgressBarStyle.Continuous;
+                            progressBar1.Maximum = allItems.Count;
+                            progressBar1.Step = 1;
+                        });
+
                         foreach (Item i in allItems)
                         {
-                            //this.Invoke(new delegate void updateGUI(() => { progressBar1.PerformStep(); }));
-                            //OnProgress(new object(), EventArgs.Empty);
+                            this.Invoke((MethodInvoker)delegate
+                            {
+
+                                progressBar1.PerformStep();
+
+                            });
                             if (i.Reviews != null)
                             {
                                 foreach (Review r in i.Reviews)
@@ -361,13 +386,121 @@ namespace ReviewReader
                 {
                     MessageBox.Show(ex.Message);
                 }
+                this.Invoke((MethodInvoker)delegate
+                {
 
+                    btn_finish.Enabled = true;
+
+                });
                 MessageBox.Show("Finished uploading");
+
             });
             // Suspend the screen.
             //Console.ReadLine();
 
 
+        }
+
+        private void btn_finish_Click(object sender, EventArgs e)
+        {
+           
+            Close();
+        }
+
+        public void saveTable(DataGridView dgv_Reviews)
+        {
+            Task.Run(() =>
+            {
+                var tableName = Interaction.InputBox("Please Enter a Table Name (No Spaces, text characters only)", "Table Name", "ReviewsTableName");
+
+                string re1 = "((?:[a-z][a-z0-9]*))";	// Variable Name 1
+
+                Regex r = new Regex(re1, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                Match m = r.Match(tableName);
+                if (m.Success)
+                {
+
+                    bool tableSuccess = Program.createTable(tableName);
+
+                }
+
+                List<review> printTable = (List<review>)dgv_Reviews.DataSource;
+
+                var connString = settings.ItemReviews;
+                MySqlConnection conn = new MySqlConnection(connString);
+                MySqlCommand command = conn.CreateCommand();
+                conn.Open();
+
+                command.CommandText = "INSERT INTO " + tableName + " VALUES(@ItemName, @ReviewersOfReview, @ReviewersOfReviewFoundHelpful, @StarsGiven, @ShortReview, @ReviewerId, @ReviewLocation, @IsAmazonVerifiedPurchase, @LongReview)";
+                command.Prepare();
+                this.Invoke((MethodInvoker)delegate
+                {
+
+                    progressBar1.Maximum = printTable.Count;
+                    progressBar1.Step = 1;
+
+                });
+
+                //Add some error handling if nothing is parsed
+                foreach (review re in printTable)
+                {
+
+                    command.Parameters.Clear();
+                    //remove the ReviewId and ItemId, fuck em
+                    command.Parameters.AddWithValue("@ItemName", re.ItemName);
+                    command.Parameters.AddWithValue("@ReviewersOfReview", re.ReviewersOfReview);
+                    command.Parameters.AddWithValue("@ReviewersOfReviewFoundHelpful", re.ReviewersOfReviewFoundHelpful);
+                    command.Parameters.AddWithValue("@StarsGiven", re.StarsGiven);
+                    command.Parameters.AddWithValue("@ShortReview", re.ShortReview);
+                    command.Parameters.AddWithValue("@ReviewerId", re.ReviewerId);
+                    command.Parameters.AddWithValue("@ReviewLocation", re.ReviewLocation);
+                    command.Parameters.AddWithValue("@IsAmazonVerifiedPurchase", re.IsAmazonVerifiedPurchase);
+                    command.Parameters.AddWithValue("@LongReview", re.LongReview);
+                    //add some error handling around this
+                    try
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    this.Invoke((MethodInvoker)delegate
+                    {
+
+                        progressBar1.PerformStep();
+
+
+                    });
+
+                }
+
+                conn.Close();
+                MessageBox.Show("Table Saved", "Saved");
+                this.Invoke((MethodInvoker)delegate
+                {
+
+                    btn_finish.Enabled = true;
+
+                });
+                mainwindows.Invoke((MethodInvoker)delegate
+                {
+
+                    mainwindows.refreshComboBox();
+
+                });
+            });
+        }
+
+        private void frm_databaseAction_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            mainwindows.Invoke((MethodInvoker)delegate
+            {
+
+                mainwindows.Enabled = true;
+
+            });
         }
 
     }
