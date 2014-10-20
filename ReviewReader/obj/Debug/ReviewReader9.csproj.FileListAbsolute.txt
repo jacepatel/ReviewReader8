@@ -40,7 +40,6 @@ C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\bin\Debug\EntityFram
 C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\TextReader.exe.manifest
 C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\TextReader.application
 C:\Users\samta_000\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\ReviewReader9.csprojResolveAssemblyReference.cache
-C:\Users\samta_000\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\ReviewReader.Review.resources
 C:\Users\samta_000\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\ReviewReader.frm_Main.resources
 C:\Users\samta_000\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\ReviewReader.frm_sqlConnection.resources
 C:\Users\samta_000\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\TextReader.Properties.Resources.resources
@@ -63,3 +62,4 @@ C:\Users\samta_000\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\TextRea
 C:\Users\samta_000\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\TextReader.application
 C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\ReviewReader.frm_databaseAction.resources
 C:\Users\Samuel\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\ReviewReader9.csprojResolveAssemblyReference.cache
+C:\Users\samta_000\Documents\GitHub\ReviewReader8\ReviewReader\obj\Debug\ReviewReader.frm_databaseAction.resources
