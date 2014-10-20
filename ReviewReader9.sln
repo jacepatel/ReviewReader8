@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReviewReader9", "ReviewReader\ReviewReader9.csproj", "{1AAEFB19-2B7C-4EAC-8154-52C341CCA7CB}"
 EndProject
 Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "ReviewReaderSetup", "ReviewReaderSetup\ReviewReaderSetup.isproj", "{B2B244BE-CAA2-475D-ABBF-F0E879CD0575}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1AAEFB19-2B7C-4EAC-8154-52C341CCA7CB} = {1AAEFB19-2B7C-4EAC-8154-52C341CCA7CB}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -28,4 +28,10 @@
 		</TaggedOutputs> -->
 	</ItemGroup>
 	<Import Project="$(MSBuildExtensionsPath32)\InstallShield\2013Limited\InstallShield.targets"/>
+	<ItemGroup>
+		<ProjectReference Include="..\ReviewReader\ReviewReader9.csproj">
+			<Name>ReviewReader9</Name>
+			<Project>{1AAEFB19-2B7C-4EAC-8154-52C341CCA7CB}</Project>
+		</ProjectReference>
+	</ItemGroup>
 </Project>
