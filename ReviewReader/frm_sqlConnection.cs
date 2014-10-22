@@ -14,6 +14,9 @@ using ReviewReader.Properties;
 
 namespace ReviewReader
 {
+    /// <summary>
+    /// Window Form for connecting to database
+    /// </summary>
     public partial class frm_sqlConnection : Form
     {
         private ReviewReader.Properties.Settings settings = new Settings();
@@ -28,11 +31,11 @@ namespace ReviewReader
             
         }
 
+        //Button actions for creating new database.
         private void brn_CreateNewDatabase_Click(object sender, EventArgs e)
         {
             var databaseName = Interaction.InputBox("Please Enter a Database Name (No Spaces, text characters only)", "Database Name", "DatabaseName");
 
-            //Add Some Checks
             if (databaseName != "")
             {
                 bool databaseSuccess = createDatabase(databaseName);
@@ -41,6 +44,10 @@ namespace ReviewReader
             refreshComboBox();
         }
 
+        /// <summary>
+        /// Creating a database on the server.
+        /// </summary>
+        /// <param name="databaseName">String of the name of database</param>
         private bool createDatabase(string databaseName)
         {
             try
@@ -51,6 +58,8 @@ namespace ReviewReader
                 command.ExecuteNonQuery();
                 connection.Close();
             }
+            
+            //Exception are thrown when MySQL fails to create database.
             catch (MySqlException ex)
             {
                 MessageBox.Show(ex.Message);
@@ -58,6 +67,8 @@ namespace ReviewReader
             }
             return true;
         }
+
+        //Renewing the list of the combo box for displaying different database name.
         public void refreshComboBox()
         {
             cmb_databaseNames.Items.Clear();
@@ -71,6 +82,7 @@ namespace ReviewReader
             cmb_databaseNames.SelectedIndex = 0;
         }
 
+        //Collect database name from DBM and stored into a list of string.
         private List<string> getDatabases()
         {
             var connString = settings.ItemReviewsBase;
@@ -89,10 +101,11 @@ namespace ReviewReader
             // Call Close when done reading.
             reader.Close();
             conn.Close();
-            //add some handling as to whether this create is successful or not
+
             return databaseNames;
         }
 
+        //Button for connecting to database server
         private void btn_Connect_Click(object sender, EventArgs e)
         {
             try
@@ -101,7 +114,6 @@ namespace ReviewReader
                 MySqlConnection connection = new MySqlConnection(new ConnectionStringSettings("ItemReviewBase", "server=" + tbx_serverName.Text + ";user id=" + tbx_userName.Text + ";password=" + tbx_password.Text + ";persistsecurityinfo=True", "MySql.Data.MySqlClient").ToString());
                 connection.Open();
                 connection.Close();
-                //MessageBox.Show("Connection was successful");
                 lbl_Connected.Text = "Connected";
                 lbl_Connected.ForeColor = Color.Green;
                 settings.ItemReviewsBase = connection.ConnectionString;
@@ -112,20 +124,19 @@ namespace ReviewReader
                 connected = true;
                 refreshComboBox();
             }
+
+            //When database server is not connected
             catch(MySqlException ex)
             {
                 lbl_Connected.Text = "Not Connected";
                 lbl_Connected.ForeColor = Color.Red;
                 MessageBox.Show(ex.Message);
                 connected = false;
-
-
             }
         }
 
         private void btn_Ok_Click(object sender, EventArgs e)
-        {
-            
+        {          
             Close();
         }
 
@@ -134,6 +145,7 @@ namespace ReviewReader
             
         }
 
+        //Saving database connection details and proceed.
         private void frm_sqlConnection_FormClosing(object sender, FormClosingEventArgs e)
         {
             if(connected)

@@ -32,7 +32,7 @@ namespace ReviewReader
             public string ReviewItem { get; set; }
             public string LongReview { get; set; }
         }
-        //[Table(Name = "Items")]
+
         public class Item
         {
             public string ItemName { get; set; }
@@ -51,15 +51,15 @@ namespace ReviewReader
         [STAThread]
         static void Main()
         {
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new frm_Main());
-            //string file = "C:\\Users\\jacep_000\\Downloads\\Amazon Review Dataset.txt";
-            //ReadFile(file);
-
         }
-        //Creates a table in the dbv
+
+        /// <summary>
+        /// Creates a table in the database
+        /// </summary>
+        /// <param name="tableName">A string of database table name are store in here.</param>
         public static bool createTable(string tableName)
         {
 
@@ -85,16 +85,16 @@ namespace ReviewReader
                 return true;
             }
             catch (MySqlException ex)
-            {
-                
+            {                
                 MessageBox.Show(ex.Message);
                 return false;
-            }
-            //add some handling as to whether this create is successful or not
-           
+            }          
         }
 
-        //Retrieves teh tables in db
+
+        /// <summary>
+        /// Retrieves the tables from database
+        /// </summary>
         public static List<string> getTablesInDatabase()
         {
 
@@ -116,19 +116,16 @@ namespace ReviewReader
             // Call Close when done reading.
             reader.Close();
             conn.Close();
-            //add some handling as to whether this create is successful or not
             return tableNames;
         }
 
-
-        //Loads the file to a table in DB
+        /// <summary>
+        /// Loads the file to a table in database
+        /// </summary>
+        /// <param name="file">A string of data from the text file.</param>
+        /// <param name="writeTableName">name of the database table for writing on</param>
         public static void ReadFile(string file, string writeTableName)
         {
-
-            //Task.Run(() =>
-            //{
-
-            //Look i added some comments
             int counter = 0;
             string line;
             bool isItemHead = false;
@@ -290,7 +287,6 @@ namespace ReviewReader
                             }
                             catch (Exception ex)
                             {
-                                //Add in some error handling about what we missed here
                                 //reset all values to look for the new header
                                 isItemHead = false;
                                 nextLineIsItemName = false;
@@ -345,7 +341,6 @@ namespace ReviewReader
                         if (nextLineIsTotalReview)
                         {
                             //SET TOTAL REVIEWS
-                            //line.Trim()
                             reviewItem.NoOfReviews = Convert.ToInt16(line.Trim().Substring(0, line.Trim().IndexOf(" ")));
                             nextLineIsTotalReview = false;
                             nextLineIsFiveStar = true;
@@ -387,7 +382,6 @@ namespace ReviewReader
             }
 
             //Writing the files to the db
-            //This needs handling for a lot of shit
             try
             {
                 var connString = settings.ItemReviews;
@@ -420,7 +414,6 @@ namespace ReviewReader
                                 }
 
                                 command.Parameters.Clear();
-                                //remove the ReviewId and ItemId, fuck em
                                 if (r.LongReview != null || r.LongReview != "")
                                 {
                                     Debug.WriteLine(r.ReviewItem);
@@ -434,7 +427,6 @@ namespace ReviewReader
                                     command.Parameters.AddWithValue("@IsAmazonVerifiedPurchase", r.IsAmazonVerifiedPurchase);
                                     command.Parameters.AddWithValue("@LongReview", trimLongReview);
 
-                                    //add some error handling around this
                                     try
                                     {
                                         command.ExecuteNonQuery();
@@ -457,11 +449,7 @@ namespace ReviewReader
             }
 
             MessageBox.Show("Finished uploading");
-            //});
             // Suspend the screen.
-            //Console.ReadLine();
-
-
         }
         
         private static void OnInitprogress(object sender, EventArgs e)
@@ -469,6 +457,7 @@ namespace ReviewReader
             if (_initprogress != null)
                 _initprogress(sender, e);
         }
+
         private static void OnProgress(object sender, EventArgs e)
         {
             if (_progress != null)
