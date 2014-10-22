@@ -170,6 +170,7 @@ namespace ReviewReader
         private void btn_SelectFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog fDialog = new OpenFileDialog();
+            fDialog.Filter = "CSV Files (.csv)|*.csv|All Files (*.*)|*.*";
             fDialog.Title = "Open Amazon Reviews Txt File";
 
             if (fDialog.ShowDialog() == DialogResult.OK)
@@ -394,6 +395,10 @@ namespace ReviewReader
                 bool tableSuccess = Program.createTable(tableName);
                 refreshComboBox();
             }
+            else
+            {
+                MessageBox.Show("Invalid Table Name");
+            }
         }
 
 
@@ -436,6 +441,10 @@ namespace ReviewReader
                 tableSuccess = Program.createTable(tableName);
 
             }
+            else
+            {
+                return;
+            }
             System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
             List<review> printTable = (List<review>)dgv_Reviews.DataSource;
             if (printTable != null && tableSuccess)
@@ -475,7 +484,8 @@ namespace ReviewReader
                 currentTableName = "";
                 conn.Close();
                 System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
-                MessageBox.Show("Table Saved", "Saved");
+                MessageBox.Show("Data Saved to Table Successfully, Select from Table List", "Saved");
+                refreshComboBox();
             }
             else if (!tableSuccess) { }
             else
@@ -502,9 +512,7 @@ namespace ReviewReader
         //Form for displaying table data
         private void frm_Main_Load(object sender, EventArgs e)
         {
-            frm_sqlConnection sqlFrm = new frm_sqlConnection();
-            if (sqlFrm.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
+
 
                 this.FormBorderStyle = FormBorderStyle.FixedSingle;
                 //males the combo box select only
@@ -519,9 +527,6 @@ namespace ReviewReader
                 }
                 if (cmb_TableNames.Items.Count > 0)
                     cmb_TableNames.SelectedIndex = 0;
-            }
-            else
-                Close();
         }
 
 
@@ -540,6 +545,11 @@ namespace ReviewReader
         private void label6_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void frm_Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
 
 

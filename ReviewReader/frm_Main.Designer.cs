@@ -53,6 +53,7 @@
             this.btn_DeleteTable = new System.Windows.Forms.Button();
             this.btn_SaveToTable = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frm_Main_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Reviews)).BeginInit();
             this.SuspendLayout();
             // 

@@ -136,8 +136,16 @@ namespace ReviewReader
         }
 
         private void btn_Ok_Click(object sender, EventArgs e)
-        {          
-            Close();
+        {
+           
+            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            settings.selectedDatabase = cmb_databaseNames.Text;
+            settings.ItemReviews = new ConnectionStringSettings("ItemReview", "server=" + settings.serverName + ";user id=" + settings.userId + ";password=" + settings.password + ";database=" + cmb_databaseNames.Text + ";persistsecurityinfo=True", "MySql.Data.MySqlClient").ToString();
+            settings.Save();
+            this.Hide();
+            frm_Main frmMain = new frm_Main();
+            frmMain.ShowDialog();
+
         }
 
         private void frm_sqlConnection_Load(object sender, EventArgs e)
@@ -148,17 +156,7 @@ namespace ReviewReader
         //Saving database connection details and proceed.
         private void frm_sqlConnection_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(connected)
-            {
-                this.DialogResult = System.Windows.Forms.DialogResult.OK;
-                settings.selectedDatabase = cmb_databaseNames.Text;
-                settings.ItemReviews = new ConnectionStringSettings("ItemReview", "server=" + settings.serverName + ";user id=" + settings.userId + ";password=" + settings.password + ";database=" + cmb_databaseNames.Text + ";persistsecurityinfo=True", "MySql.Data.MySqlClient").ToString();
-                settings.Save();
-            }
-            else
-            {
-                this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            }
+            Application.Exit();
         }
     }
 }
