@@ -21,7 +21,7 @@ namespace ReviewReader
         private static Properties.Settings settings = new Properties.Settings();
         public class Review
         {
-            public int ReviewersOfReview { get; set; }
+            public int NumOfReviewRatings { get; set; }
             public int ReviewersOfReviewFoundHelpful { get; set; }
             public decimal StarsGiven { get; set; }
             public string ShortReview { get; set; }
@@ -70,8 +70,8 @@ namespace ReviewReader
                 MySqlCommand command = conn.CreateCommand();
                 conn.Open();
                 command.CommandText = "CREATE TABLE `" + tableName + "` (" +
-              "`ItemName` varchar(4000) DEFAULT NULL, " +
-              "`ReviewersOfReview` int(11) NOT NULL," +
+              "`ItemName` varchar(4000) NOT NULL, " +
+              "`NumOfReviewRatings` int(11) NOT NULL," +
               "`ReviewersOfReviewFoundHelpful` int(11) NOT NULL," +
               "`StarsGiven` int(11) NOT NULL," +
               "`ShortReview` varchar(500) DEFAULT NULL," +

@@ -72,7 +72,7 @@
             this.dgv_Reviews.Name = "dgv_Reviews";
             this.dgv_Reviews.Size = new System.Drawing.Size(792, 346);
             this.dgv_Reviews.TabIndex = 2;
-            this.dgv_Reviews.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_Reviews_CellContentClick);
+           
             // 
             // btn_ViewReviews
             // 

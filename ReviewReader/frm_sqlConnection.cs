@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ReviewReader.Properties;
+using System.Text.RegularExpressions;
 
 namespace ReviewReader
 {
@@ -26,17 +27,27 @@ namespace ReviewReader
             tbx_serverName.Text = settings.serverName;
             tbx_userName.Text = settings.userId;
             tbx_password.Text = settings.password;
-            
+
         }
 
         private void brn_CreateNewDatabase_Click(object sender, EventArgs e)
         {
             var databaseName = Interaction.InputBox("Please Enter a Database Name (No Spaces, text characters only)", "Database Name", "DatabaseName");
 
-            //Add Some Checks
-            if (databaseName != "")
+            string re1 = "((([_?A-z])+[_]?([A-z_])+))";	// Variable Name 1
+            if (databaseName == "")
+            {
+                return;
+            }
+            Regex r = new Regex(re1, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            Match m = r.Match(databaseName);
+            if (m.Success)
             {
                 bool databaseSuccess = createDatabase(databaseName);
+            }
+            else
+            {
+                MessageBox.Show("Invalid Database name. Enter a name with characters from A to z with no spaces");
             }
 
             refreshComboBox();
@@ -98,7 +109,7 @@ namespace ReviewReader
         {
             try
             {
-                
+
                 MySqlConnection connection = new MySqlConnection(new ConnectionStringSettings("ItemReviewBase", "server=" + tbx_serverName.Text + ";user id=" + tbx_userName.Text + ";password=" + tbx_password.Text + ";persistsecurityinfo=True", "MySql.Data.MySqlClient").ToString());
                 connection.Open();
                 connection.Close();
@@ -113,12 +124,14 @@ namespace ReviewReader
                 connected = true;
                 refreshComboBox();
             }
-            catch(MySqlException ex)
+            catch (MySqlException ex)
             {
                 lbl_Connected.Text = "Not Connected";
                 lbl_Connected.ForeColor = Color.Red;
                 MessageBox.Show(ex.Message);
                 connected = false;
+                GB_connToDB.Enabled = false;
+                cmb_databaseNames.Items.Clear();
 
 
             }
@@ -132,11 +145,11 @@ namespace ReviewReader
 
         private void frm_sqlConnection_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         private void frm_sqlConnection_FormClosing(object sender, FormClosingEventArgs e)
-        {            
+        {
             if (connected && OK)
             {
                 this.DialogResult = System.Windows.Forms.DialogResult.OK;

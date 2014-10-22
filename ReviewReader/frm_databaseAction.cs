@@ -184,7 +184,7 @@ namespace ReviewReader
                                         int space2 = line.Trim().IndexOf(" ", space1 + 1);
                                         int space3 = line.Trim().IndexOf(" ", space2 + 1);
                                         itemReview.ReviewersOfReviewFoundHelpful = Convert.ToInt16(line.Trim().Substring(0, space1).Replace(",", ""));
-                                        itemReview.ReviewersOfReview = Convert.ToInt16(line.Trim().Substring(space2 + 1, space3 - space2).Replace(",", ""));
+                                        itemReview.NumOfReviewRatings = Convert.ToInt16(line.Trim().Substring(space2 + 1, space3 - space2).Replace(",", ""));
                                         counter++;
                                         continue;
                                     }
@@ -315,7 +315,7 @@ namespace ReviewReader
                     conn.Open();
 
 
-                    command.CommandText = "INSERT INTO " + writeTableName + " VALUES(@ItemName, @ReviewersOfReview, @ReviewersOfReviewFoundHelpful, @StarsGiven, @ShortReview, @ReviewerId, @ReviewLocation, @IsAmazonVerifiedPurchase, @LongReview)";
+                    command.CommandText = "INSERT INTO " + writeTableName + " VALUES(@ItemName, @NumOfReviewRatings, @ReviewersOfReviewFoundHelpful, @StarsGiven, @ShortReview, @ReviewerId, @ReviewLocation, @IsAmazonVerifiedPurchase, @LongReview)";
                     command.Prepare();
 
                     if (allItems != null)
@@ -356,7 +356,7 @@ namespace ReviewReader
                                     {
                                         Debug.WriteLine(r.ReviewItem);
                                         command.Parameters.AddWithValue("@ItemName", r.ReviewItem);
-                                        command.Parameters.AddWithValue("@ReviewersOfReview", r.ReviewersOfReview);
+                                        command.Parameters.AddWithValue("@NumOfReviewRatings", r.NumOfReviewRatings);
                                         command.Parameters.AddWithValue("@ReviewersOfReviewFoundHelpful", r.ReviewersOfReviewFoundHelpful);
                                         command.Parameters.AddWithValue("@StarsGiven", r.StarsGiven);
                                         command.Parameters.AddWithValue("@ShortReview", r.ShortReview);
@@ -372,7 +372,7 @@ namespace ReviewReader
                                         }
                                         catch (Exception ex)
                                         {
-                                            MessageBox.Show(ex.Message);
+                                            Debug.WriteLine(ex.Message);
                                         }
                                     }
                                 }
@@ -411,9 +411,19 @@ namespace ReviewReader
         {
             Task.Run(() =>
             {
+                List<review> printTable = (List<review>)dgv_Reviews.DataSource;
+                if(printTable == null)
+                {
+                    Interaction.MsgBox("This is no table to save",MsgBoxStyle.Exclamation,"ERROR");                    
+                    return;
+                }
                 var tableName = Interaction.InputBox("Please Enter a Table Name (No Spaces, text characters only)", "Table Name", "ReviewsTableName");
 
-                string re1 = "((?:[a-z][a-z0-9]*))";	// Variable Name 1
+                if (tableName == "")
+                {
+                    return;
+                }
+                string re1 = "((([_?A-z])+[_]?([A-z_])+))";	// Variable Name 1
 
                 Regex r = new Regex(re1, RegexOptions.IgnoreCase | RegexOptions.Singleline);
                 Match m = r.Match(tableName);
@@ -424,14 +434,14 @@ namespace ReviewReader
 
                 }
 
-                List<review> printTable = (List<review>)dgv_Reviews.DataSource;
-
+                
+                
                 var connString = settings.ItemReviews;
                 MySqlConnection conn = new MySqlConnection(connString);
                 MySqlCommand command = conn.CreateCommand();
                 conn.Open();
 
-                command.CommandText = "INSERT INTO " + tableName + " VALUES(@ItemName, @ReviewersOfReview, @ReviewersOfReviewFoundHelpful, @StarsGiven, @ShortReview, @ReviewerId, @ReviewLocation, @IsAmazonVerifiedPurchase, @LongReview)";
+                command.CommandText = "INSERT INTO " + tableName + " VALUES(@ItemName, @NumOfReviewRatings, @ReviewersOfReviewFoundHelpful, @StarsGiven, @ShortReview, @ReviewerId, @ReviewLocation, @IsAmazonVerifiedPurchase, @LongReview)";
                 command.Prepare();
                 this.Invoke((MethodInvoker)delegate
                 {
@@ -448,7 +458,7 @@ namespace ReviewReader
                     command.Parameters.Clear();
                     //remove the ReviewId and ItemId, fuck em
                     command.Parameters.AddWithValue("@ItemName", re.ItemName);
-                    command.Parameters.AddWithValue("@ReviewersOfReview", re.ReviewersOfReview);
+                    command.Parameters.AddWithValue("@NumOfReviewRatings", re.NumOfReviewRatings);
                     command.Parameters.AddWithValue("@ReviewersOfReviewFoundHelpful", re.ReviewersOfReviewFoundHelpful);
                     command.Parameters.AddWithValue("@StarsGiven", re.StarsGiven);
                     command.Parameters.AddWithValue("@ShortReview", re.ShortReview);
@@ -506,7 +516,7 @@ namespace ReviewReader
     }
     public class Review
     {
-        public int ReviewersOfReview { get; set; }
+        public int NumOfReviewRatings { get; set; }
         public int ReviewersOfReviewFoundHelpful { get; set; }
         public decimal StarsGiven { get; set; }
         public string ShortReview { get; set; }

@@ -87,7 +87,7 @@ namespace ReviewReader
                     try
                     {
                         r.ItemName = reader.GetString(0);
-                        r.ReviewersOfReview = reader.GetInt16(1);
+                        r.NumOfReviewRatings = reader.GetInt16(1);
                         r.ReviewersOfReviewFoundHelpful = reader.GetInt16(2);
                         r.StarsGiven = reader.GetInt16(3);
                         r.ShortReview = reader.GetString(4);
@@ -304,13 +304,13 @@ namespace ReviewReader
                         sw.Write(string.Format("{0}{1}", openClose, Environment.NewLine));
                         //csv.Append(string.Format("{0}{1}", openClose, Environment.NewLine));
 
-                        string helpfullness = r.ReviewersOfReviewFoundHelpful + "/" + r.ReviewersOfReview;
+                        string helpfullness = r.ReviewersOfReviewFoundHelpful + "/" + r.NumOfReviewRatings;
                         //csv.Append(string.Format("{0}{1}", helpfullness, Environment.NewLine));
                         sw.Write(string.Format("{0}{1}", helpfullness, Environment.NewLine));
 
-                        if (r.ReviewersOfReview != 0)
+                        if (r.NumOfReviewRatings != 0)
                         {
-                            decimal helpfullnessRating = decimal.Divide(r.ReviewersOfReviewFoundHelpful, r.ReviewersOfReview);
+                            decimal helpfullnessRating = decimal.Divide(r.ReviewersOfReviewFoundHelpful, r.NumOfReviewRatings);
                             //csv.Append(string.Format("{0}{1}", helpfullnessRating.ToString("#.##"), Environment.NewLine));
                             sw.Write(string.Format("{0}{1}", helpfullnessRating.ToString("#.##"), Environment.NewLine));
                         }
@@ -410,8 +410,11 @@ namespace ReviewReader
         {
             var tableName = Interaction.InputBox("Please Enter a Table Name (No Spaces, text characters only)", "Table Name", "ReviewsTableName");
 
-            string re1 = "((?:[a-z][a-z0-9]*))";	// Variable Name 1
-
+            string re1 = "((([_?A-z])+[_]?([A-z_])+))";	// Variable Name 1
+            if (tableName == "")
+            {
+                return;
+            }
             Regex r = new Regex(re1, RegexOptions.IgnoreCase | RegexOptions.Singleline);
             Match m = r.Match(tableName);
             if (m.Success)
@@ -545,5 +548,7 @@ namespace ReviewReader
             else
                 Close();
         }
+
+
     }
 }

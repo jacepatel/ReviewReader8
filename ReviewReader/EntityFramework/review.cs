@@ -15,7 +15,7 @@ namespace TextReader.EntityFramework
         [StringLength(4000)]
         public string ItemName { get; set; }
 
-        public int ReviewersOfReview { get; set; }
+        public int NumOfReviewRatings { get; set; }
         //change name
 
         public int ReviewersOfReviewFoundHelpful { get; set; }
