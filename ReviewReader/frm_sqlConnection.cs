@@ -34,7 +34,7 @@ namespace ReviewReader
         {
             var databaseName = Interaction.InputBox("Please Enter a Database Name (No Spaces, text characters only)", "Database Name", "DatabaseName");
 
-            string re1 = "((([_?A-z])+[_]?([A-z_])+))";	// Variable Name 1
+            string re1 = "(([_?A-z0-9])+[_]?([A-z_0-9])+)";	// Variable Name 1
             if (databaseName == "")
             {
                 return;

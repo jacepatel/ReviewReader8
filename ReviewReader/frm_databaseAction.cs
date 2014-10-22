@@ -414,7 +414,7 @@ namespace ReviewReader
                 List<review> printTable = (List<review>)dgv_Reviews.DataSource;
                 if(printTable == null)
                 {
-                    Interaction.MsgBox("This is no table to save",MsgBoxStyle.Exclamation,"ERROR");                    
+                    Interaction.MsgBox("There is no table to save. \r Exit the progress screen.", MsgBoxStyle.Exclamation, "ERROR");                    
                     return;
                 }
                 var tableName = Interaction.InputBox("Please Enter a Table Name (No Spaces, text characters only)", "Table Name", "ReviewsTableName");
@@ -423,83 +423,89 @@ namespace ReviewReader
                 {
                     return;
                 }
-                string re1 = "((([_?A-z])+[_]?([A-z_])+))";	// Variable Name 1
+                string re1 = "(([_?A-z0-9])+[_]?([A-z_0-9])+)";	// Variable Name 1
 
                 Regex r = new Regex(re1, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                
                 Match m = r.Match(tableName);
                 if (m.Success)
                 {
-
+                    if (tableName != m.Value)
+                    {
+                        Interaction.MsgBox("Bad Name. Try again\r Exit the progress screen.", MsgBoxStyle.Exclamation, "ERROR");
+                        return;
+                    }
                     bool tableSuccess = Program.createTable(tableName);
-
-                }
-
-                
-                
-                var connString = settings.ItemReviews;
-                MySqlConnection conn = new MySqlConnection(connString);
-                MySqlCommand command = conn.CreateCommand();
-                conn.Open();
-
-                command.CommandText = "INSERT INTO " + tableName + " VALUES(@ItemName, @NumOfReviewRatings, @ReviewersOfReviewFoundHelpful, @StarsGiven, @ShortReview, @ReviewerId, @ReviewLocation, @IsAmazonVerifiedPurchase, @LongReview)";
-                command.Prepare();
-                this.Invoke((MethodInvoker)delegate
-                {
-
-                    progressBar1.Maximum = printTable.Count;
-                    progressBar1.Step = 1;
-
-                });
-
-                //Add some error handling if nothing is parsed
-                foreach (review re in printTable)
-                {
-
-                    command.Parameters.Clear();
-                    //remove the ReviewId and ItemId, fuck em
-                    command.Parameters.AddWithValue("@ItemName", re.ItemName);
-                    command.Parameters.AddWithValue("@NumOfReviewRatings", re.NumOfReviewRatings);
-                    command.Parameters.AddWithValue("@ReviewersOfReviewFoundHelpful", re.ReviewersOfReviewFoundHelpful);
-                    command.Parameters.AddWithValue("@StarsGiven", re.StarsGiven);
-                    command.Parameters.AddWithValue("@ShortReview", re.ShortReview);
-                    command.Parameters.AddWithValue("@ReviewerId", re.ReviewerId);
-                    command.Parameters.AddWithValue("@ReviewLocation", re.ReviewLocation);
-                    command.Parameters.AddWithValue("@IsAmazonVerifiedPurchase", re.IsAmazonVerifiedPurchase);
-                    command.Parameters.AddWithValue("@LongReview", re.LongReview);
-                    //add some error handling around this
-                    try
+                    if(!tableSuccess)
                     {
-                        command.ExecuteNonQuery();
+                        return;
+                    }
 
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
+                    var connString = settings.ItemReviews;
+                    MySqlConnection conn = new MySqlConnection(connString);
+                    MySqlCommand command = conn.CreateCommand();
+                    conn.Open();
+
+                    command.CommandText = "INSERT INTO " + tableName + " VALUES(@ItemName, @NumOfReviewRatings, @ReviewersOfReviewFoundHelpful, @StarsGiven, @ShortReview, @ReviewerId, @ReviewLocation, @IsAmazonVerifiedPurchase, @LongReview)";
+                    command.Prepare();
                     this.Invoke((MethodInvoker)delegate
                     {
 
-                        progressBar1.PerformStep();
-
+                        progressBar1.Maximum = printTable.Count;
+                        progressBar1.Step = 1;
 
                     });
 
+                    //Add some error handling if nothing is parsed
+                    foreach (review re in printTable)
+                    {
+
+                        command.Parameters.Clear();
+                        //remove the ReviewId and ItemId, fuck em
+                        command.Parameters.AddWithValue("@ItemName", re.ItemName);
+                        command.Parameters.AddWithValue("@NumOfReviewRatings", re.NumOfReviewRatings);
+                        command.Parameters.AddWithValue("@ReviewersOfReviewFoundHelpful", re.ReviewersOfReviewFoundHelpful);
+                        command.Parameters.AddWithValue("@StarsGiven", re.StarsGiven);
+                        command.Parameters.AddWithValue("@ShortReview", re.ShortReview);
+                        command.Parameters.AddWithValue("@ReviewerId", re.ReviewerId);
+                        command.Parameters.AddWithValue("@ReviewLocation", re.ReviewLocation);
+                        command.Parameters.AddWithValue("@IsAmazonVerifiedPurchase", re.IsAmazonVerifiedPurchase);
+                        command.Parameters.AddWithValue("@LongReview", re.LongReview);
+                        //add some error handling around this
+                        try
+                        {
+                            command.ExecuteNonQuery();
+
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+                        this.Invoke((MethodInvoker)delegate
+                        {
+
+                            progressBar1.PerformStep();
+
+
+                        });
+
+                    }
+
+                    conn.Close();
+                    MessageBox.Show("Table Saved", "Saved");
+                    this.Invoke((MethodInvoker)delegate
+                    {
+
+                        btn_finish.Enabled = true;
+
+                    });
+                    mainwindows.Invoke((MethodInvoker)delegate
+                    {
+
+                        mainwindows.refreshComboBox();
+
+                    });
                 }
-
-                conn.Close();
-                MessageBox.Show("Table Saved", "Saved");
-                this.Invoke((MethodInvoker)delegate
-                {
-
-                    btn_finish.Enabled = true;
-
-                });
-                mainwindows.Invoke((MethodInvoker)delegate
-                {
-
-                    mainwindows.refreshComboBox();
-
-                });
             });
         }
 

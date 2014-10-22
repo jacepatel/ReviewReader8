@@ -142,14 +142,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Review Reader.exe" size="55808">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Review Reader.exe" size="56320">
       <assemblyIdentity name="Review Reader" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>B9bK9UOEE4MMwgKgkNHIDxhWb1zfaeb7l+iv3Kl46Vk=</dsig:DigestValue>
+        <dsig:DigestValue>z7sCkrs72DVcLQHheLodbJeofYjBR07SEtGI4AeJh64=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -378,7 +378,14 @@ namespace ReviewReader
             else if (dgv_Reviews.CurrentCell.ColumnIndex == 7)
             {
                 string review = dgv_Reviews.CurrentCell.Value.ToString();
-                MessageBox.Show(review, "Long Review");
+                string[] sentences = Regex.Split(review, @"(?<=[\.!\?])\s+");
+                review = "";
+                foreach (string sentence in sentences)
+                {
+                    //csv.Append(string.Format("{0}{1}", sentence, Environment.NewLine));
+                    review += string.Format("{0}{1}", sentence, Environment.NewLine);
+                }
+                    MessageBox.Show(review, "Long Review");
                 //format
 
             }
@@ -410,7 +417,7 @@ namespace ReviewReader
         {
             var tableName = Interaction.InputBox("Please Enter a Table Name (No Spaces, text characters only)", "Table Name", "ReviewsTableName");
 
-            string re1 = "((([_?A-z])+[_]?([A-z_])+))";	// Variable Name 1
+            string re1 = "(([_?A-z0-9])+[_]?([A-z_0-9])+)";	// Variable Name 1
             if (tableName == "")
             {
                 return;
