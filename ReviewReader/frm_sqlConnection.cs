@@ -19,6 +19,7 @@ namespace ReviewReader
         private ReviewReader.Properties.Settings settings = new Settings();
         public static int numOfItems = 0;
         private bool connected = false;
+        private bool OK = false;
         public frm_sqlConnection()
         {
             InitializeComponent();
@@ -125,7 +126,7 @@ namespace ReviewReader
 
         private void btn_Ok_Click(object sender, EventArgs e)
         {
-            
+            OK = true;
             Close();
         }
 
@@ -136,7 +137,7 @@ namespace ReviewReader
 
         private void frm_sqlConnection_FormClosing(object sender, FormClosingEventArgs e)
         {            
-            if (connected)
+            if (connected && OK)
             {
                 this.DialogResult = System.Windows.Forms.DialogResult.OK;
                 settings.selectedDatabase = cmb_databaseNames.Text;
