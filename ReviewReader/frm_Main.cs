@@ -170,7 +170,7 @@ namespace ReviewReader
         private void btn_SelectFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog fDialog = new OpenFileDialog();
-            fDialog.Filter = "CSV Files (.csv)|*.csv|All Files (*.*)|*.*";
+            fDialog.Filter = "CSV Files (.csv)|*.csv|TXT Files (.txt)|*.txt|All Files (*.*)|*.*";
             fDialog.Title = "Open Amazon Reviews Txt File";
 
             if (fDialog.ShowDialog() == DialogResult.OK)
