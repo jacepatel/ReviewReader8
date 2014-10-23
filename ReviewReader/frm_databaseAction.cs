@@ -21,6 +21,10 @@ namespace ReviewReader
     public delegate void readFileIntoDB(string file, string writeTableName);
     public delegate void saveTabletoDB(DataGridView dgv_Reviews);
 
+
+    /// <summary>
+    /// This class provides feed back to the user when any data is being saved to the database
+    /// </summary>
     public partial class frm_databaseAction : Form
     {
 
@@ -42,7 +46,7 @@ namespace ReviewReader
 
         public void ReadFile(string file, string writeTableName)
         {
-
+            //run in seperate thread to keep GUI responsive
             Task.Run(() =>
             {
 
@@ -58,6 +62,7 @@ namespace ReviewReader
                 bool nextLineIsReviewer = false;
                 bool nextLineIsLongReview = false;
                 int reviewLine = 0;
+                
                 List<Item> allItems = new List<Item>();
 
                 Item reviewItem = new Item();
@@ -330,6 +335,7 @@ namespace ReviewReader
 
                         foreach (Item i in allItems)
                         {
+                            //update GUI
                             this.Invoke((MethodInvoker)delegate
                             {
 
@@ -351,7 +357,7 @@ namespace ReviewReader
                                     }
 
                                     command.Parameters.Clear();
-                                    //remove the ReviewId and ItemId, fuck em
+                                    //make sure review is legit
                                     if (r.LongReview != null || r.LongReview != "")
                                     {
                                         Debug.WriteLine(r.ReviewItem);
@@ -365,7 +371,6 @@ namespace ReviewReader
                                         command.Parameters.AddWithValue("@IsAmazonVerifiedPurchase", r.IsAmazonVerifiedPurchase);
                                         command.Parameters.AddWithValue("@LongReview", trimLongReview);
 
-                                        //add some error handling around this
                                         try
                                         {
                                             command.ExecuteNonQuery();
@@ -395,8 +400,7 @@ namespace ReviewReader
                 MessageBox.Show("Finished uploading");
 
             });
-            // Suspend the screen.
-            //Console.ReadLine();
+            
 
 
         }
@@ -409,8 +413,10 @@ namespace ReviewReader
 
         public void saveTable(DataGridView dgv_Reviews)
         {
+            //run in new thread to keep GUI responsive
             Task.Run(() =>
             {
+                //retrive reviews
                 List<review> printTable = (List<review>)dgv_Reviews.DataSource;
                 if(printTable == null)
                 {
@@ -423,6 +429,7 @@ namespace ReviewReader
                 {
                     return;
                 }
+                //make sure the name only has letters numbers and hyphons
                 string re1 = "(([_?A-z0-9])+[_]?([A-z_0-9])+)";	// Variable Name 1
 
                 Regex r = new Regex(re1, RegexOptions.IgnoreCase | RegexOptions.Singleline);
@@ -430,12 +437,14 @@ namespace ReviewReader
                 Match m = r.Match(tableName);
                 if (m.Success)
                 {
+                    //make sure the name is correct
                     if (tableName != m.Value)
                     {
                         Interaction.MsgBox("Bad Name. Try again\r Exit the progress screen.", MsgBoxStyle.Exclamation, "ERROR");
                         return;
                     }
                     bool tableSuccess = Program.createTable(tableName);
+                    //make sure the table got created
                     if(!tableSuccess)
                     {
                         return;
@@ -448,6 +457,7 @@ namespace ReviewReader
 
                     command.CommandText = "INSERT INTO " + tableName + " VALUES(@ItemName, @NumOfReviewRatings, @ReviewersOfReviewFoundHelpful, @StarsGiven, @ShortReview, @ReviewerId, @ReviewLocation, @IsAmazonVerifiedPurchase, @LongReview)";
                     command.Prepare();
+                    //update GUI
                     this.Invoke((MethodInvoker)delegate
                     {
 
@@ -456,12 +466,12 @@ namespace ReviewReader
 
                     });
 
-                    //Add some error handling if nothing is parsed
+                    
                     foreach (review re in printTable)
                     {
 
                         command.Parameters.Clear();
-                        //remove the ReviewId and ItemId, fuck em
+                        
                         command.Parameters.AddWithValue("@ItemName", re.ItemName);
                         command.Parameters.AddWithValue("@NumOfReviewRatings", re.NumOfReviewRatings);
                         command.Parameters.AddWithValue("@ReviewersOfReviewFoundHelpful", re.ReviewersOfReviewFoundHelpful);
@@ -471,7 +481,7 @@ namespace ReviewReader
                         command.Parameters.AddWithValue("@ReviewLocation", re.ReviewLocation);
                         command.Parameters.AddWithValue("@IsAmazonVerifiedPurchase", re.IsAmazonVerifiedPurchase);
                         command.Parameters.AddWithValue("@LongReview", re.LongReview);
-                        //add some error handling around this
+                       
                         try
                         {
                             command.ExecuteNonQuery();
@@ -491,8 +501,8 @@ namespace ReviewReader
 
                     }
 
-                    conn.Close();
-                    MessageBox.Show("Table Saved", "Saved");
+                    conn.Close();                   
+
                     this.Invoke((MethodInvoker)delegate
                     {
 
@@ -501,7 +511,7 @@ namespace ReviewReader
                     });
                     mainwindows.Invoke((MethodInvoker)delegate
                     {
-
+                        //refresh combobox on main page
                         mainwindows.refreshComboBox();
 
                     });
@@ -511,6 +521,7 @@ namespace ReviewReader
 
         private void frm_databaseAction_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //re-enable the main form
             mainwindows.Invoke((MethodInvoker)delegate
             {
 
