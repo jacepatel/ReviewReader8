@@ -33,8 +33,7 @@ namespace ReviewReader
 
         }
 
-
-
+        //Load the txt file that's been selected to the database
         private void loadDb_Click(object sender, EventArgs e)
         {
             if (cmb_TableNames.Text == "")
@@ -46,7 +45,7 @@ namespace ReviewReader
             {
                 MessageBox.Show("Uploading now.","Uploading");
 
-
+                //Activare wait cursor, initiate the loading bar, load file to db
                 System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
                 frm_databaseAction databaseAction = new frm_databaseAction(this);
                 readFileIntoDB action = new readFileIntoDB(databaseAction.ReadFile);
@@ -68,9 +67,11 @@ namespace ReviewReader
         //Executes a command parsed at the db and returns relevant reviews
         public List<review> getReviewsFromDB(string commandText)
         {
+
             List<review> qryReviews = new List<review>();
             var connString = settings.ItemReviews;
             MySqlConnection conn = new MySqlConnection(connString);
+            //Executes the recieved command text on the database stored in settings
             MySqlCommand command = conn.CreateCommand();
             try
             {
@@ -120,9 +121,7 @@ namespace ReviewReader
             var query = from c in qryReviews select c;
             var users = query.ToList();
 
-            //Hide 0, 2, 10
-            //ask jace
-            //feedback on loading
+            //Query the list for the numbers
             var totReviews = users.Count;
             var maxReviews = (from r in users
                               group r by r.ReviewerId into grp
@@ -147,6 +146,7 @@ namespace ReviewReader
                     maxReviewsbyUser = "0";
             }
 
+            //Display the labels
             lbl_TotalReviews.Text = "Total Reviews: " + totReviews.ToString();
             //Add some error handling for max reviews when none selected
             lbl_MaxUserReviews.Text = "Most Reviews by a User: " + maxReviewsbyUser;
@@ -165,7 +165,7 @@ namespace ReviewReader
             }
             else
             {
-
+                //sets teh command text and parses it the getReviewsFromDB Command
                 string commandText = "select * from " + settings.selectedDatabase + "." + cmb_TableNames.Text;
                 List<review> qryReviews = getReviewsFromDB(commandText);
                 displayReviewsOnScreen(qryReviews);
@@ -218,6 +218,7 @@ namespace ReviewReader
 
             var starsGivenLow = Convert.ToInt16(txt_StarsGivenLow.Text);
             var starsGivenHigh = Convert.ToInt16(txt_StarsGivenHigh.Text);
+            //Pases the command to the getReviewsFromDB command
             string commandText = "select * from " + settings.selectedDatabase + "." + cmb_TableNames.Text +
                 " WHERE starsGiven >= " + starsGivenLow + " AND starsGiven <= " + starsGivenHigh;
             List<review> qryReviews = getReviewsFromDB(commandText);
@@ -260,6 +261,7 @@ namespace ReviewReader
             var reviewsLow = Convert.ToInt16(txt_ReviewsMadeLow.Text);
             var reviewsHigh = Convert.ToInt16(txt_ReviewsMadeHigh.Text);
 
+            //Sets the command text with parameters and parses to the db
             string commandText = "select * from " + settings.selectedDatabase + "." + cmb_TableNames.Text +
                 " WHERE ReviewerID IN " +
                 "(SELECT ReviewerID FROM " + settings.selectedDatabase + "." + cmb_TableNames.Text + " " +
@@ -277,13 +279,17 @@ namespace ReviewReader
         //Button to export the reviews to a text file
         private void btn_ExportToCSV_Click(object sender, EventArgs e)
         {
+            //Checks for seleted table
             System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
             if (cmb_TableNames.Text == "")
             {
                 MessageBox.Show("Please select a table");
                 return;
             }
+
+            
             string openClose = "--";
+            //Gets the data from the datasource
             List<review> printTable = (List<review>)dgv_Reviews.DataSource;
             var csv = new StringBuilder();
             SaveFileDialog fDialog = new SaveFileDialog();
@@ -353,11 +359,12 @@ namespace ReviewReader
                 MessageBox.Show("Please select a table");
                 return;
             }
-            //Add some error handling around this, for cell selection, maybe detect diff cells diff actions
+            //Checks which cell was clicked, 5 is reviewer ID
             if (dgv_Reviews.CurrentCell.ColumnIndex == 5)
             {
                 string reviewerId = dgv_Reviews.CurrentCell.Value.ToString();
 
+                //Selects the current cell adn 
                 string commandText = "select * from " + settings.selectedDatabase + "." + cmb_TableNames.Text +
                     " WHERE ReviewerID = '" + reviewerId + "'";
                 List<review> qryReviews = getReviewsFromDB(commandText);
@@ -392,10 +399,9 @@ namespace ReviewReader
             }
 
         }
-
+        //Unnecessary should be deleted
         private void label6_Click(object sender, EventArgs e)
         {
-
         }
 
         //Refreshes the combo box with up to date list of tables
@@ -438,10 +444,10 @@ namespace ReviewReader
 
         }
 
+
+        //unnecessary
         private void cmb_TableNames_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-
         }
 
         //Button to delete table
@@ -482,11 +488,15 @@ namespace ReviewReader
 
         }
 
+
+        //unecessary
         private void lbl_reviewbetween_Click(object sender, EventArgs e)
         {
 
         }
 
+
+        //On the form main load
         private void frm_Main_Load(object sender, EventArgs e)
         {
             frm_sqlConnection sqlFrm = new frm_sqlConnection();
