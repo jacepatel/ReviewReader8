@@ -15,6 +15,9 @@ using System.Text.RegularExpressions;
 
 namespace ReviewReader
 {
+    /// <summary>
+    /// this class can connect to a mysql server and create databases
+    /// </summary>
     public partial class frm_sqlConnection : Form
     {
         private ReviewReader.Properties.Settings settings = new Settings();
@@ -24,6 +27,7 @@ namespace ReviewReader
         public frm_sqlConnection()
         {
             InitializeComponent();
+            //get saved my sql settings
             tbx_serverName.Text = settings.serverName;
             tbx_userName.Text = settings.userId;
             tbx_password.Text = settings.password;
@@ -34,6 +38,7 @@ namespace ReviewReader
         {
             var databaseName = Interaction.InputBox("Please Enter a Database Name (No Spaces, text characters only)", "Database Name", "DatabaseName");
 
+            //check for proper names
             string re1 = "(([_?A-z0-9])+[_]?([A-z_0-9])+)";	// Variable Name 1
             if (databaseName == "")
             {
@@ -43,6 +48,10 @@ namespace ReviewReader
             Match m = r.Match(databaseName);
             if (m.Success)
             {
+                if(m.Value != databaseName)
+                {
+                    return;
+                }
                 bool databaseSuccess = createDatabase(databaseName);
             }
             else
@@ -85,6 +94,7 @@ namespace ReviewReader
 
         private List<string> getDatabases()
         {
+            //get connection string from settings
             var connString = settings.ItemReviewsBase;
             MySqlConnection conn = new MySqlConnection(connString);
             MySqlCommand command = conn.CreateCommand();
@@ -95,13 +105,14 @@ namespace ReviewReader
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
+                //get all database names
                 databaseNames.Add(reader.GetString(0));
             }
 
             // Call Close when done reading.
             reader.Close();
             conn.Close();
-            //add some handling as to whether this create is successful or not
+            
             return databaseNames;
         }
 
@@ -109,7 +120,7 @@ namespace ReviewReader
         {
             try
             {
-
+                //connect to database and save settings
                 MySqlConnection connection = new MySqlConnection(new ConnectionStringSettings("ItemReviewBase", "server=" + tbx_serverName.Text + ";user id=" + tbx_userName.Text + ";password=" + tbx_password.Text + ";persistsecurityinfo=True", "MySql.Data.MySqlClient").ToString());
                 connection.Open();
                 connection.Close();
@@ -126,6 +137,7 @@ namespace ReviewReader
             }
             catch (MySqlException ex)
             {
+                //alert user that connection fail
                 lbl_Connected.Text = "Not Connected";
                 lbl_Connected.ForeColor = Color.Red;
                 MessageBox.Show(ex.Message);
@@ -152,6 +164,7 @@ namespace ReviewReader
         {
             if (connected && OK)
             {
+                //save settings and go to maidn form
                 this.DialogResult = System.Windows.Forms.DialogResult.OK;
                 settings.selectedDatabase = cmb_databaseNames.Text;
                 settings.ItemReviews = new ConnectionStringSettings("ItemReview", "server=" + settings.serverName + ";user id=" + settings.userId + ";password=" + settings.password + ";database=" + cmb_databaseNames.Text + ";persistsecurityinfo=True", "MySql.Data.MySqlClient").ToString();
@@ -159,6 +172,7 @@ namespace ReviewReader
             }
             else
             {
+                //close program
                 this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             }
         }
