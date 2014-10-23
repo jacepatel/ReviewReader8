@@ -44,7 +44,7 @@ namespace ReviewReader
             }
             if (filePath != "")
             {
-                MessageBox.Show("This may take up to 30 minutes, will be faster soon");
+                MessageBox.Show("Uploading now.","Uploading");
 
 
                 System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
@@ -178,6 +178,7 @@ namespace ReviewReader
         private void btn_SelectFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog fDialog = new OpenFileDialog();
+            fDialog.Filter = "txt files (*.txt)|*.txt|csv files (*.csv)|*.csv|All files (*.*)|*.*";
             fDialog.Title = "Open Amazon Reviews Txt File";
 
             if (fDialog.ShowDialog() == DialogResult.OK)
@@ -477,53 +478,7 @@ namespace ReviewReader
             saveTabletoDB saveDb = new saveTabletoDB(dbAction.saveTable);
             dbAction.Show();
             dbAction.Invoke(saveDb, dgv_Reviews);
-            this.Enabled = false;
-            //System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
-            //if (cmb_TableNames.Text == "")
-            //{
-            //    MessageBox.Show("Please select a table");
-            //    return;
-            //}
-
-            //List<review> printTable = (List<review>)dgv_Reviews.DataSource;
-
-            //var connString = settings.ItemReviews;
-            //MySqlConnection conn = new MySqlConnection(connString);
-            //MySqlCommand command = conn.CreateCommand();
-            //conn.Open();
-
-            //command.CommandText = "INSERT INTO " + cmb_TableNames.Text + " VALUES(@ItemName, @ReviewersOfReview, @ReviewersOfReviewFoundHelpful, @StarsGiven, @ShortReview, @ReviewerId, @ReviewLocation, @IsAmazonVerifiedPurchase, @LongReview)";
-            //command.Prepare();
-
-
-            ////Add some error handling if nothing is parsed
-            //foreach (review r in printTable)
-            //{
-            //    command.Parameters.Clear();
-            //    //remove the ReviewId and ItemId, fuck em
-            //    command.Parameters.AddWithValue("@ItemName", r.ItemName);
-            //    command.Parameters.AddWithValue("@ReviewersOfReview", r.ReviewersOfReview);
-            //    command.Parameters.AddWithValue("@ReviewersOfReviewFoundHelpful", r.ReviewersOfReviewFoundHelpful);
-            //    command.Parameters.AddWithValue("@StarsGiven", r.StarsGiven);
-            //    command.Parameters.AddWithValue("@ShortReview", r.ShortReview);
-            //    command.Parameters.AddWithValue("@ReviewerId", r.ReviewerId);
-            //    command.Parameters.AddWithValue("@ReviewLocation", r.ReviewLocation);
-            //    command.Parameters.AddWithValue("@IsAmazonVerifiedPurchase", r.IsAmazonVerifiedPurchase);
-            //    command.Parameters.AddWithValue("@LongReview", r.LongReview);
-            //    //add some error handling around this
-            //    try
-            //    {
-            //        command.ExecuteNonQuery();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        MessageBox.Show(ex.Message);
-            //    }
-            //}
-            //currentTableName = "";
-            //conn.Close();
-            //System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
-            //MessageBox.Show("Table Saved", "Saved");
+            this.Enabled = false;           
 
         }
 
